@@ -17,7 +17,6 @@
  */
 
 #include "gshhs.h"
-#include "mercator.h"
 #include "read_gshhs.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -91,9 +90,9 @@ int main (int argc, char **argv)
     
     /* Affichage du nombre de polygones contenu dans le GSHHS */
     printf("Nb polygone= %8d\n", polygons->nb_poly );
-    printf("ID polygone N° 1865= %8d\n", polygons->contour[1865].id );
-    printf("Lat_max polygone N° 1865= %8d\n", polygons->contour[1865].lat_max );
-    printf("P1x polygone N° 1865= %8d\n", polygons->contour[1865].vertex[1].x );
+    //printf("ID polygone N° 1865= %8d\n", polygons->contour[1865].id );
+    //printf("Lat_max polygone N° 1865= %8d\n", polygons->contour[1865].lat_max );
+    //printf("P1x polygone N° 1865= %8d\n", polygons->contour[1865].vertex[1].x );
         
     
     /* fermeture du fichier GSHHS */
