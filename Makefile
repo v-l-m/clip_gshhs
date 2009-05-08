@@ -3,7 +3,7 @@ CFLAGS = -Wall -O3
 LDFLAGS = -lm
 LIBS =  -lgd -lpng
 
-EXEC=readgshhs read_bd map_g
+EXEC=readgshhs read_bd map_g tiles_g
 
 all: $(EXEC)
 
@@ -30,6 +30,12 @@ map_g: map.o map_functions.o map_projection.o
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS) $(LIBS)
 
+# Tiles_G		
+tiles_g: tiles.o map_functions.o map_projection.o
+	$(CC) -o $@ $^ $(LDFLAGS) $(LIBS)
+
+%.o: %.c
+	$(CC) -o $@ -c $< $(CFLAGS) $(LIBS)
 
 #Cleaner!
 clean:
