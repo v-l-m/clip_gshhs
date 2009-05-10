@@ -60,15 +60,15 @@
 
 typedef struct
     {
-        float   long_start;         // Longitude start      -> degrees [0, 360]
-        float   lat_start;          // Latitude start       -> degrees [0, 360]
-        float   long_extent;        // Longitude extend     -> degrees [-90, 90]
-        float   lat_extent;         // Latitude extend      -> degrees [-90, 90]
-        float   Zoom;               // Zoom                 -> pixel/degrees equator
-        float   grid_space;         // Grid spacing         -> degrees [0, 360]
+        double   long_start;         // Longitude start      -> degrees [0, 360]
+        double   lat_start;          // Latitude start       -> degrees [0, 360]
+        double   long_extent;        // Longitude extend     -> degrees [-90, 90]
+        double   lat_extent;         // Latitude extend      -> degrees [-90, 90]
+        double   Zoom;               // Zoom                 -> pixel/degrees equator
+        double   grid_space;         // Grid spacing         -> degrees [0, 360]
                                     //                          0 = No grid
-        float   LongCenter;         // Longitude center     -> degrees [0, 360]
-        float   LatCenter;          // Latitude center      -> degrees [0, 360]
+        double   LongCenter;         // Longitude center     -> degrees [0, 360]
+        double   LatCenter;          // Latitude center      -> degrees [0, 360]
         int     MapWidth;           // Map Width            -> pixel
         int     MapHeight;          // Map Height           -> pixel
                                     
@@ -143,22 +143,22 @@ void    ReadPolygonFile         (FILE *polyfile,
 
 void    FreePolygon             (gpc_polygon *p);
 
-void    DegToHMS                (char *hms, float deg, char *type);
+void    DegToHMS                (char *hms, double deg, char *type);
 
 void    DrawPolygonFilled       (gdImagePtr Image, gpc_polygon *p1,
-                                float X_Origine, float Y_Origine, float Zoom,
+                                double X_Origine, double Y_Origine, double Zoom,
                                 int Fill_Color);
 
 void    DrawPolygonContour      (gdImagePtr Image, gpc_polygon *p,
                                 int x, int y,
                                 int pas_x, int pas_y,
-                                float X_Origine, float Y_Origine, float Zoom,
+                                double X_Origine, double Y_Origine, double Zoom,
                                 int Contour_Color);
 
 void    DrawGrid                (gdImagePtr Image, int MapWidth, int MapHeight,
-                                float long_min, float long_max, float lat_min, float lat_max,
-                                float X_Origine, float Y_Origine, float Zoom,
-                                float Grid_Space, int Grid_Color, int Text_Color);
+                                double long_min, double long_max, double lat_min, double lat_max,
+                                double X_Origine, double Y_Origine, double Zoom,
+                                double Grid_Space, int Grid_Color, int Text_Color);
 
 
 #endif
