@@ -58,10 +58,10 @@ int main (int argc, char **argv)
     FILE *image_png; /* Fichier image PNG */
     int water_color, coast_color, land_color, grid_color;
     int text_color;
-    float long_max, long_min, lat_max, lat_min;
+    double long_max, long_min, lat_max, lat_min;
     int long_max_int, long_min_int, lat_max_int, lat_min_int;
     int x_image, y_image;
-    float origine_x, origine_y;
+    double origine_x, origine_y;
     int c, v;
     gdPoint *poly_pt;
     double c1, c2, c3;
@@ -151,7 +151,7 @@ int main (int argc, char **argv)
     //Détermination des longitudes mini, maxi, et origine image x
     long_min = X_Tile * 360.0 / Nb_Tiles;
     long_max = (X_Tile+1) * 360.0 / Nb_Tiles;;
-    printf("long_min: %f, long_max: %f\n", long_min, long_max);
+    printf("long_min: %lf, long_max: %lf\n", long_min, long_max);
     
     if (long_min>=0)    long_min_int=   floor(fabs(long_min));
     if (long_min<0)     long_min_int=  -ceil(fabs(long_min));
@@ -160,12 +160,12 @@ int main (int argc, char **argv)
 
     origine_x = -long_min * zoom;
 
-    printf("long_min: %d, long_max: %d, origine_x: %f\n", long_min_int, long_max_int, origine_x);
+    printf("long_min: %d, long_max: %d, origine_x: %lf\n", long_min_int, long_max_int, origine_x);
     
     //Détermination des latitudes mini, maxi, et origine image y
     lat_min = MercatorInverseLatitudeSimple(((Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles)* M_PI/180);
     lat_max = MercatorInverseLatitudeSimple(((Nb_Tiles/2)-(Y_Tile))*(360.0/Nb_Tiles)* M_PI/180);
-    printf("plat_min: %f, lat_max: %f\n", lat_min, lat_max);
+    printf("plat_min: %lf, lat_max: %lf\n", lat_min, lat_max);
     
     if (lat_min>=0)    lat_min_int=     floor(fabs(lat_min));
     if (lat_min<0)     lat_min_int=    -ceil(fabs(lat_min));
@@ -174,7 +174,7 @@ int main (int argc, char **argv)
 
     origine_y = -MercatorLatitudeSimple(lat_min)*180*zoom/M_PI;
 
-    printf("lat_min: %d, lat_max: %d, origine_y: %f\n", lat_min_int, lat_max_int, origine_y);
+    printf("lat_min: %d, lat_max: %d, origine_y: %lf\n", lat_min_int, lat_max_int, origine_y);
     
     
     // Création de l'image
@@ -202,11 +202,12 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                //DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                //DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                //DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                //DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
                 
                 FreePolygon(&p1);

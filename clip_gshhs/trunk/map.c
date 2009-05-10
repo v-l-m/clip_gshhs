@@ -59,10 +59,10 @@ int main (int argc, char **argv)
     FILE *image_png; /* Fichier image PNG */
     int water_color, coast_color, land_color, grid_color;
     int text_color;
-    float long_max, long_min, lat_max, lat_min;
+    double long_max, long_min, lat_max, lat_min;
     int long_max_int, long_min_int, lat_max_int, lat_min_int;
     int x_image, y_image;
-    float origine_x, origine_y;
+    double origine_x, origine_y;
     int c, v;
     gdPoint *poly_pt;
     double c1, c2, c3;
@@ -103,7 +103,7 @@ int main (int argc, char **argv)
     //Détermination des longitudes mini, maxi, et origine image x
     long_min = cmd.LongCenter - (cmd.MapWidth/2) / cmd.Zoom;
     long_max = cmd.LongCenter + (cmd.MapWidth/2) / cmd.Zoom;
-    printf("long_min: %f, long_max: %f\n", long_min, long_max);
+    printf("long_min: %lf, long_max: %lf\n", long_min, long_max);
     
     if (long_min>=0)    long_min_int=   floor(fabs(long_min));
     if (long_min<0)     long_min_int=  -ceil(fabs(long_min));
@@ -112,22 +112,22 @@ int main (int argc, char **argv)
 
     origine_x = -long_min * cmd.Zoom;
 
-    printf("long_min: %d, long_max: %d, origine_x: %f\n", long_min_int, long_max_int, origine_x);
+    printf("long_min: %d, long_max: %d, origine_x: %lf\n", long_min_int, long_max_int, origine_x);
     
     
     //Détermination des latitudes mini, maxi, et origine image y
     lat_min = MercatorInverseLatitudeSimple(((MercatorLatitudeSimple(cmd.LatCenter)*180*cmd.Zoom/M_PI)-(cmd.MapHeight/2)) * M_PI/(180*cmd.Zoom));
     lat_max = MercatorInverseLatitudeSimple(((MercatorLatitudeSimple(cmd.LatCenter)*180*cmd.Zoom/M_PI)+(cmd.MapHeight/2)) * M_PI/(180*cmd.Zoom));
-    printf("lat_min: %f, lat_max: %f\n", lat_min, lat_max);
+    printf("lat_min: %lf, lat_max: %lf\n", lat_min, lat_max);
     
     if (lat_min>=0)    lat_min_int=     floor(fabs(lat_min));
     if (lat_min<0)     lat_min_int=    -ceil(fabs(lat_min));
     if (lat_max>=0)    lat_max_int=     ceil(fabs(lat_max));
     if (lat_max<0)     lat_max_int=    -floor(fabs(lat_max));
 
-    origine_y = -MercatorLatitudeSimple(lat_min)*180*cmd.Zoom/M_PI;
+    origine_y = -MercatorLatitudeSimple(lat_min)*180.0*cmd.Zoom/M_PI;
 
-    printf("lat_min: %d, lat_max: %d, origine_y: %f\n", lat_min_int, lat_max_int, origine_y);
+    printf("lat_min: %d, lat_max: %d, origine_y: %lf\n", lat_min_int, lat_max_int, origine_y);
     
     
     // Création de l'image
@@ -155,11 +155,12 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 
-                //DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
-                //DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
-                //DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
-                //DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 
                 FreePolygon(&p1);
@@ -186,6 +187,7 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
 
                 DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
@@ -212,6 +214,7 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
 
                 DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
@@ -245,6 +248,7 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
 
                 DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
@@ -271,6 +275,7 @@ int main (int argc, char **argv)
                 DrawPolygonFilled(image, &p2, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 DrawPolygonFilled(image, &p3, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
                 DrawPolygonFilled(image, &p4, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, land_color);
 
                 DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
