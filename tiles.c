@@ -184,7 +184,7 @@ int main (int argc, char **argv)
     image_f= gdImageCreate(TileDim, TileDim);
     
     // Création des couleurs
-    water_color =   gdImageColorAllocate(image, 99, 164, 255);
+    water_color =   gdImageColorAllocate(image, 224, 224, 240);
     land_color  =   gdImageColorAllocate(image, 255, 213, 162);
     coast_color =   gdImageColorAllocate(image, 204, 117, 59);
     grid_color  =   gdImageColorAllocate(image, 250, 250, 250);
