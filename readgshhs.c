@@ -23,14 +23,6 @@
 
 #include <string.h>
 
-void GshhsToGpcFile(FILE *gpc_file, gshhs_polygons *polygons, int id_poly)
-{
-    int i;
-    for (i = 0; i < polygons->contour[id_poly].nb_point - 1; i++) {
-        fprintf(gpc_file, "%10d %10d\n", polygons->contour[id_poly].vertex[i].x,
-                                         polygons->contour[id_poly].vertex[i].y);
-    }
-}
 
 
 
@@ -40,8 +32,6 @@ int main (int argc, char **argv)
     char gshhs_name[256];
     gshhs_polygons *polygons;
     
-    int k;
-    int i, j;
     int n;
     int n1, n2, n3, n4, n5;
     

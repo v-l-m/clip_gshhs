@@ -39,6 +39,11 @@
 
 #define DEBUG           1
 
+#ifndef M_PI
+#define M_PI          3.14159265358979323846264338327950288
+#endif
+
+
 /*
 ===========================================================================
                                Macro
@@ -60,37 +65,33 @@
 
 typedef struct
     {
-        double   long_start;         // Longitude start      -> degrees [0, 360]
-        double   lat_start;          // Latitude start       -> degrees [0, 360]
-        double   long_extent;        // Longitude extend     -> degrees [-90, 90]
-        double   lat_extent;         // Latitude extend      -> degrees [-90, 90]
-        double   Zoom;               // Zoom                 -> pixel/degrees equator
-        double   grid_space;         // Grid spacing         -> degrees [0, 360]
+        double  long_start;         // Longitude start      -> degrees [0, 360]
+        double  lat_start;          // Latitude start       -> degrees [0, 360]
+        double  long_extent;        // Longitude extend     -> degrees [-90, 90]
+        double  lat_extent;         // Latitude extend      -> degrees [-90, 90]
+        double  Zoom;               // Zoom                 -> pixel/degrees equator
+        double  grid_space;         // Grid spacing         -> degrees [0, 360]
                                     //                          0 = No grid
-        double   LongCenter;         // Longitude center     -> degrees [0, 360]
-        double   LatCenter;          // Latitude center      -> degrees [0, 360]
+        double  LongCenter;         // Longitude center     -> degrees [0, 360]
+        double  LatCenter;          // Latitude center      -> degrees [0, 360]
         int     MapWidth;           // Map Width            -> pixel
         int     MapHeight;          // Map Height           -> pixel
-                                    
-                                   
-                                    
-                                    
         
         int     WaterColorR;        // Water color red      -> [0-255]
         int     WaterColorG;        // Water color green    -> [0-255]
         int     WaterColorB;        // Water color blue     -> [0-255]
         
-        int     CoastColorR;      // Coast color red      -> [0-255]
-        int     CoastColorG;      // Coast color green    -> [0-255]
-        int     CoastColorB;      // Coast color blue     -> [0-255]
+        int     CoastColorR;        // Coast color red      -> [0-255]
+        int     CoastColorG;        // Coast color green    -> [0-255]
+        int     CoastColorB;        // Coast color blue     -> [0-255]
         
-        int     LandColorR;       // Land color red       -> [0-255]
-        int     LandColorG;       // Land color green     -> [0-255]
-        int     LandColorB;       // Land color blue      -> [0-255]
+        int     LandColorR;         // Land color red       -> [0-255]
+        int     LandColorG;         // Land color green     -> [0-255]
+        int     LandColorB;         // Land color blue      -> [0-255]
         
-        int     GridColorR;       // Grid color red       -> [0-255]
-        int     GridColorG;       // Grid color green     -> [0-255]
-        int     GridColorB;       // Grid color blue      -> [0-255]
+        int     GridColorR;         // Grid color red       -> [0-255]
+        int     GridColorG;         // Grid color green     -> [0-255]
+        int     GridColorB;         // Grid color blue      -> [0-255]
         
         char    resolution[10];     // GSHHS resolution     -> [c, l, i, h, f]
         char    projection[256];    // Map projection       -> [mercator,
@@ -159,6 +160,22 @@ void    DrawGrid                (gdImagePtr Image, int MapWidth, int MapHeight,
                                 double long_min, double long_max, double lat_min, double lat_max,
                                 double X_Origine, double Y_Origine, double Zoom,
                                 double Grid_Space, int Grid_Color, int Text_Color);
+
+void    DrawLine                (gdImagePtr Image, gshhs_contour *p,
+                                int x, int y,
+                                int pas_x, int pas_y,
+                                double X_Origine, double Y_Origine, double Zoom,
+                                int Contour_Color);
+
+void    ReadLineFile            (FILE *linefile,
+                                int x, int y, 
+                                gshhs_contour *contour);
+                                
+void    FreeLine                (gshhs_contour *p);
+
+void    PolygonToGML            (gpc_polygon *p,
+                                FILE *gmlfile,
+                                int translate);
 
 
 #endif

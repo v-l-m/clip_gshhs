@@ -28,7 +28,6 @@
  *	Contact: <stephpen@gmail.com>
 */
 
-
 #ifndef _MAP_PROJECTION_H_
 #define _MAP_PROJECTION_H_
 /*
@@ -39,6 +38,11 @@
 
 #define R_MAJOR         6378137.0
 #define R_MINOR         6356752.3142
+
+#ifndef M_PI
+#define M_PI          3.14159265358979323846264338327950288
+#endif
+
 
 /*
 ===========================================================================

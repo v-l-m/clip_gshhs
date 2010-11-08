@@ -24,6 +24,9 @@
 ===========================================================================
 */
 
+#ifndef M_PI
+#define M_PI          3.14159265358979323846264338327950288
+#endif
 
 
 /*
@@ -66,11 +69,32 @@ typedef struct
     gshhs_vertex_list   *contour;
 } gshhs_polygons;
 
+typedef struct
+{
+    double              x1;            /* xxx     */
+    double              y1;
+    double              x2;            /* xxx     */
+    double              y2;
+} gshhs_line;
+
+
+typedef struct
+{
+    int              nb_line;            /* xxx     */
+    gshhs_line       *line;
+} gshhs_contour;
+
+
+
 /*
 ===========================================================================
                        Public Function Prototypes
 ===========================================================================
 */
+
+void GshhsToGpcFile         (FILE *gpc_file,
+                            gshhs_polygons *polygons,
+                            int id_poly);
 
 void read_gshhs             (FILE               *gshhs_file,
                             gshhs_polygons      *polygons,
@@ -78,6 +102,8 @@ void read_gshhs             (FILE               *gshhs_file,
                             
 void free_gshhs             (gshhs_polygons     *polygons,
                             int                 nb_poly);
+
+
 
 #endif
 

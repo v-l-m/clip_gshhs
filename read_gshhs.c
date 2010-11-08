@@ -23,11 +23,19 @@
 #include <math.h>
 #include "read_gshhs.h"
 
+void GshhsToGpcFile(FILE *gpc_file, gshhs_polygons *polygons, int id_poly)
+{
+    int i;
+    for (i = 0; i < polygons->contour[id_poly].nb_point - 1; i++) {
+        fprintf(gpc_file, "%10d %10d\n", polygons->contour[id_poly].vertex[i].x,
+                                         polygons->contour[id_poly].vertex[i].y);
+    }
+}
+
 void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
 {
     /* declaration des variables */
-    double  area, lon, lat;
-    char    source;
+    double  lon, lat;
     int     k, max_east = 270000000, n_read, flip;
     int     version;
     int     i = 0;

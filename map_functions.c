@@ -34,6 +34,7 @@
 #include <math.h>
 #include <gd.h>
 
+#include "read_gshhs.h"
 #include "gpc.h"
 #include "map_functions.h"
 #include "map_projection.h"
@@ -53,12 +54,12 @@ void ReadCmdFile (FILE *cmdfile, CmdOrder *cmd)
 {
     char    order[256];
     char    startcmd[3] = "[";     //Caractere de debut de commande
-    char    startcom[3] = "#";     //Caractere de debut de commentaire
+    //char    startcom[3] = "#";     //Caractere de debut de commentaire
     int     read;
-    double   x_start, y_start;
-    double   x_center, y_center;
-    double   x_extent, y_extent;
-    int     greenwich;
+    //double   x_start, y_start;
+    //double   x_center, y_center;
+    //double   x_extent, y_extent;
+    //int     greenwich;
     
 
     do
@@ -73,6 +74,7 @@ void ReadCmdFile (FILE *cmdfile, CmdOrder *cmd)
                 {
                     read = fscanf(cmdfile, "%lf %lf %d %d", &(cmd->LongCenter), &(cmd->LatCenter), &(cmd->MapWidth), &(cmd->MapHeight));
                 }
+                /*
                 if (strcmp(order, "[Map_Start]") == 0)
                 {
                     read = fscanf(cmdfile, "%lf %lf %lf %lf", &x_start, &y_start, &x_extent, &y_extent);
@@ -81,17 +83,18 @@ void ReadCmdFile (FILE *cmdfile, CmdOrder *cmd)
                     cmd->long_extent = x_extent;
                     cmd->lat_extent = y_extent;
                 }
+                */
                 if (strcmp(order, "[Zoom]") == 0)
                 {
                     read = fscanf(cmdfile, "%lf", &(cmd->Zoom));
                 }
                 if (strcmp(order, "[Resol]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->resolution));
+                    read = fscanf(cmdfile, "%s", cmd->resolution);
                 }
                 if (strcmp(order, "[Projection]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->projection));
+                    read = fscanf(cmdfile, "%s", cmd->projection);
                 }
                 if (strcmp(order, "[Water_Color]") == 0)
                 {
@@ -115,19 +118,19 @@ void ReadCmdFile (FILE *cmdfile, CmdOrder *cmd)
                 }
                 if (strcmp(order, "[BD_Path]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->bd_path));
+                    read = fscanf(cmdfile, "%s", cmd->bd_path);
                 }
                 if (strcmp(order, "[BD_Name]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->bd_name));
+                    read = fscanf(cmdfile, "%s", cmd->bd_name);
                 }
                 if (strcmp(order, "[Map_Path]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->map_path));
+                    read = fscanf(cmdfile, "%s", cmd->map_path);
                 }
                 if (strcmp(order, "[Map_Name]") == 0)
                 {
-                    read = fscanf(cmdfile, "%s", &(cmd->map_name));
+                    read = fscanf(cmdfile, "%s", cmd->map_name);
                 }
             }
         }
@@ -140,14 +143,14 @@ void ReadCmdFile (FILE *cmdfile, CmdOrder *cmd)
         printf("\n");
         printf("##### Function read_cmd_file #####\n");
         printf("#--------------------------------#\n");
-        printf("# Long_Start:   %lf\n", cmd->long_start);
-        printf("# Lat_Start:    %lf\n", cmd->lat_start);
-        printf("# Long_Extent:  %lf\n", cmd->long_extent);
-        printf("# Lat_Extent:   %lf\n", cmd->lat_extent);
+        //printf("# Long_Start:   %lf\n", cmd->long_start);
+        //printf("# Lat_Start:    %lf\n", cmd->lat_start);
+        //printf("# Long_Extent:  %lf\n", cmd->long_extent);
+        //printf("# Lat_Extent:   %lf\n", cmd->lat_extent);
         printf("# Long_Center:  %lf\n", cmd->LongCenter);
         printf("# Lat_Center:   %lf\n", cmd->LatCenter);
-        printf("# Map_Width:    %lf\n", cmd->MapWidth);
-        printf("# Map_Height:   %lf\n", cmd->MapHeight);
+        printf("# Map_Width:    %d\n", cmd->MapWidth);
+        printf("# Map_Height:   %d\n", cmd->MapHeight);
         
         printf("# Zoom:         %lf\n", cmd->Zoom);
         printf("# Resol:        %s\n", cmd->resolution);
@@ -207,9 +210,7 @@ void ReadPolygonFile (FILE *polyfile,
 
     long pos_data;
     long tab_data;
-    int data1, data2, data3;
-    double xx, yy;
-    int i, c, v;
+    int c, v;
 
 
     tab_data = (x/pas_x)*(180/pas_y) + (y+90)/pas_y;
@@ -360,7 +361,7 @@ void DegToHMS(char *hms, double n, char *type)
         
     }
 
-    if (n<0)
+    else
     {
         n=-n;
         deg=floor(n);
@@ -373,9 +374,10 @@ void DegToHMS(char *hms, double n, char *type)
 }
 
 
-void DrawPolygonFilled(gdImagePtr Image, gpc_polygon *p,
-                    double X_Origine, double Y_Origine, double Zoom,
-                    int Fill_Color)
+void DrawPolygonFilled( gdImagePtr Image, gpc_polygon *p,
+                        double X_Origine, double Y_Origine,
+                        double Zoom,
+                        int Fill_Color)
 {
 
     int c, v;
@@ -395,8 +397,8 @@ void DrawPolygonFilled(gdImagePtr Image, gpc_polygon *p,
                 
         for (v= 0; v < p->contour[c].num_vertices; v++)
         {
-            poly_pt[v].x = (int)lround(X_Origine + MercatorLongitudeSimple(p->contour[c].vertex[v].x * GSHHS_SCL) *r);
-            poly_pt[v].y = (int)lround(Y_Origine - MercatorLatitudeSimple(p->contour[c].vertex[v].y * GSHHS_SCL)  *r);
+            poly_pt[v].x = (int)round(X_Origine + MercatorLongitudeSimple(p->contour[c].vertex[v].x * GSHHS_SCL) *r);
+            poly_pt[v].y = (int)round(Y_Origine - MercatorLatitudeSimple(p->contour[c].vertex[v].y * GSHHS_SCL)  *r);
         }
         gdImageFilledPolygon(Image, poly_pt, p->contour[c].num_vertices , Fill_Color);
                 
@@ -406,10 +408,11 @@ void DrawPolygonFilled(gdImagePtr Image, gpc_polygon *p,
     }
 }
 
-void    DrawPolygonContour(gdImagePtr Image, gpc_polygon *p,
+void    DrawPolygonContour( gdImagePtr Image, gpc_polygon *p,
                             int x, int y,
                             int pas_x, int pas_y,
-                            double X_Origine, double Y_Origine, double Zoom,
+                            double X_Origine, double Y_Origine,
+                            double Zoom,
                             int Contour_Color)
 {
 
@@ -437,8 +440,8 @@ void    DrawPolygonContour(gdImagePtr Image, gpc_polygon *p,
             // Elimination des traits verticaux et horizontaux
             if ((((x1==x2) && ((x1==long_min) || (x1==long_max))) || ((y1==y2) && ((y1==lat_min) || (y1==lat_max))))==0)
             {
-                gdImageLine(Image,  (int)lround(X_Origine + MercatorLongitudeSimple(x1 * GSHHS_SCL) *r), (int)lround(Y_Origine - MercatorLatitudeSimple(y1 * GSHHS_SCL)  *r),
-                                    (int)lround(X_Origine + MercatorLongitudeSimple(x2 * GSHHS_SCL) *r), (int)lround(Y_Origine - MercatorLatitudeSimple(y2 * GSHHS_SCL)  *r),
+                gdImageLine(Image,  (int)round(X_Origine + MercatorLongitudeSimple(x1 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y1 * GSHHS_SCL)  *r),
+                                    (int)round(X_Origine + MercatorLongitudeSimple(x2 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y2 * GSHHS_SCL)  *r),
                                     Contour_Color);
             
             }
@@ -451,17 +454,18 @@ void    DrawPolygonContour(gdImagePtr Image, gpc_polygon *p,
 
         if ((((x1==x2) && ((x1==long_min) || (x1==long_max))) || ((y1==y2) && ((y1==lat_min) || (y1==lat_max))))==0)
         {
-            gdImageLine(Image,  (int)lround(X_Origine + MercatorLongitudeSimple(x1 * GSHHS_SCL) *r), (int)lround(Y_Origine - MercatorLatitudeSimple(y1 * GSHHS_SCL)  *r),
-                                (int)lround(X_Origine + MercatorLongitudeSimple(x2 * GSHHS_SCL) *r), (int)lround(Y_Origine - MercatorLatitudeSimple(y2 * GSHHS_SCL)  *r),
+            gdImageLine(Image,  (int)round(X_Origine + MercatorLongitudeSimple(x1 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y1 * GSHHS_SCL)  *r),
+                                (int)round(X_Origine + MercatorLongitudeSimple(x2 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y2 * GSHHS_SCL)  *r),
                                 Contour_Color);
             
         }
     }
 }
 
-void    DrawGrid    (gdImagePtr Image, int MapWidth, int MapHeight,
+void    DrawGrid(   gdImagePtr Image, int MapWidth, int MapHeight,
                     double long_min, double long_max, double lat_min, double lat_max,
-                    double X_Origine, double Y_Origine, double Zoom,
+                    double X_Origine, double Y_Origine,
+                    double Zoom,
                     double Grid_Space, int Grid_Color, int Text_Color)
 {
     
@@ -469,20 +473,20 @@ void    DrawGrid    (gdImagePtr Image, int MapWidth, int MapHeight,
     double x1, y1, x2, y2;
     double LongGrid_Min, LatGrid_Min, LongGrid_Max, LatGrid_Max;
     double r;
-    char    txt[30];
+    char    txt[50];
      
     
     r = 180*Zoom/M_PI;
     
     if (long_min>=0)    LongGrid_Min=   floor(fabs(long_min)/Grid_Space)*Grid_Space;
-    if (long_min<0)     LongGrid_Min=  -ceil(fabs(long_min)/Grid_Space)*Grid_Space;
+    else                LongGrid_Min=  -ceil(fabs(long_min)/Grid_Space)*Grid_Space;
     if (long_max>=0)    LongGrid_Max=   ceil(fabs(long_max)/Grid_Space)*Grid_Space;
-    if (long_max<0)     LongGrid_Max=  -floor(fabs(long_max)/Grid_Space)*Grid_Space;
+    else                LongGrid_Max=  -floor(fabs(long_max)/Grid_Space)*Grid_Space;
     
     if (lat_min>=0)    LatGrid_Min=     floor(fabs(lat_min)/Grid_Space)*Grid_Space;
-    if (lat_min<0)     LatGrid_Min=    -ceil(fabs(lat_min)/Grid_Space)*Grid_Space;
+    else               LatGrid_Min=    -ceil(fabs(lat_min)/Grid_Space)*Grid_Space;
     if (lat_max>=0)    LatGrid_Max=     ceil(fabs(lat_max)/Grid_Space)*Grid_Space;
-    if (lat_max<0)     LatGrid_Max=    -floor(fabs(lat_max)/Grid_Space)*Grid_Space;
+    else               LatGrid_Max=    -floor(fabs(lat_max)/Grid_Space)*Grid_Space;
 
     
 
@@ -493,14 +497,14 @@ void    DrawGrid    (gdImagePtr Image, int MapWidth, int MapHeight,
         y1=Y_Origine - MercatorLatitudeSimple(lat_min)*r;
         y2=Y_Origine - MercatorLatitudeSimple(lat_max)*r;
         //printf("x1= %f, y1= %f, x2= %f, y2= %f\n", x1, y1, x2, y2);
-        gdImageLine(Image, (int)lround(x1), (int)lround(y1), (int)lround(x2), (int)lround(y2), Grid_Color);
+        gdImageLine(Image, (int)round(x1), (int)round(y1), (int)round(x2), (int)round(y2), Grid_Color);
         
         DegToHMS(txt, x, "long");
         //printf("%d\n", gdFontGetSmall()->h);
-        gdImageFilledRectangle(Image, (int)lround(x1-(strlen(txt) * gdFontGetSmall()->w/2)), (int)lround(Image->sy - gdFontGetSmall()->h), (int)lround(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)lround(Image->sy), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)lround(x1-(strlen(txt) * gdFontGetSmall()->w /2)), (int)lround(Image->sy - gdFontGetSmall()->h), txt, Text_Color);
-        gdImageFilledRectangle(Image, (int)lround(x1-(strlen(txt) * gdFontGetSmall()->w/2)), 0, (int)lround(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)lround(gdFontGetSmall()->h), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)lround(x1-(strlen(txt) * gdFontGetSmall()->w /2)), 0, txt, Text_Color);
+        gdImageFilledRectangle(Image, (int)round(x1-(strlen(txt) * gdFontGetSmall()->w/2)), (int)round(Image->sy - gdFontGetSmall()->h), (int)round(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(Image->sy), Grid_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(Image->sy - gdFontGetSmall()->h), txt, Text_Color);
+        gdImageFilledRectangle(Image, (int)round(x1-(strlen(txt) * gdFontGetSmall()->w/2)), 0, (int)round(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(gdFontGetSmall()->h), Grid_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), 0, txt, Text_Color);
     }
     
     for (y=LatGrid_Min; y<=LatGrid_Max; y=y+Grid_Space)
@@ -510,16 +514,163 @@ void    DrawGrid    (gdImagePtr Image, int MapWidth, int MapHeight,
         y1=Y_Origine - MercatorLatitudeSimple(y)*r;
         y2=y1;
         //printf("x1= %f, y1= %f, x2= %f, y2= %f\n", x1, y1, x2, y2);
-        gdImageLine(Image, (int)lround(x1), (int)lround(y1), (int)lround(x2), (int)lround(y2), Grid_Color);
+        gdImageLine(Image, (int)round(x1), (int)round(y1), (int)round(x2), (int)round(y2), Grid_Color);
 
         DegToHMS(txt, y, "lat");
-        gdImageFilledRectangle(Image, 0, (int)lround(y1 - gdFontGetSmall()->h/2), (int)lround(strlen(txt) * gdFontGetSmall()->w), (int)lround(y1 + gdFontGetSmall()->h/2), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), 0, (int)lround(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
-        gdImageFilledRectangle(Image, (int)lround(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)lround(y1 - gdFontGetSmall()->h/2), (int)lround(Image->sx), (int)lround(y1 + gdFontGetSmall()->h/2), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)lround(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)lround(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
+        gdImageFilledRectangle(Image, 0, (int)round(y1 - gdFontGetSmall()->h/2), (int)round(strlen(txt) * gdFontGetSmall()->w), (int)round(y1 + gdFontGetSmall()->h/2), Grid_Color);
+        gdImageString(Image, gdFontGetSmall(), 0, (int)round(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
+        gdImageFilledRectangle(Image, (int)round(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)round(y1 - gdFontGetSmall()->h/2), (int)round(Image->sx), (int)round(y1 + gdFontGetSmall()->h/2), Grid_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)round(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
 
     }
 
+}
+
+void    DrawLine(   gdImagePtr Image, gshhs_contour *p,
+                    int x, int y,
+                    int pas_x, int pas_y,
+                    double X_Origine, double Y_Origine,
+                    double Zoom,
+                    int Contour_Color)
+{
+
+    int c;
+    double r;
+    double x1, y1, x2, y2;
+    double long_max, lat_max, long_min, lat_min;
+    
+    r = 180.0*Zoom/M_PI;
+    
+    long_min=(double)x/GSHHS_SCL;
+    lat_min=(double)y/GSHHS_SCL;
+    long_max=((double)x+(double)pas_x)/GSHHS_SCL;
+    lat_max=((double)y+(double)pas_y)/GSHHS_SCL;
+
+    //printf("nb line: %d\n", p->nb_line);
+    if (p->nb_line>0)
+    {
+        for (c= 0; c < p->nb_line; c++)
+        {
+            x1=p->line[c].x1;
+            y1=p->line[c].y1;
+            x2=p->line[c].x2;
+            y2=p->line[c].y2;
+            
+            gdImageLine(Image,  (int)round(X_Origine + MercatorLongitudeSimple(x1 ) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y1 )  *r),
+                                    (int)round(X_Origine + MercatorLongitudeSimple(x2 ) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y2 )  *r),
+                                    Contour_Color);
+            
+        }
+    }
+}
+        
+
+void ReadLineFile(  FILE *linefile,
+                    int x, int y,
+                    gshhs_contour *contour)
+{
+
+    long pos_data;
+    long tab_data;
+    int c;
+
+
+    tab_data = x*180 + (y+90);
+    fseek(linefile, sizeof(PolygonFileHeader) + tab_data*sizeof(int), SEEK_SET);
+    fread(&pos_data, sizeof(long), 1, linefile);
+    
+    fseek(linefile, pos_data, SEEK_SET);
+    
+    fread(&(contour->nb_line), sizeof(int), 1, linefile);
+    contour->line = NULL;
+    contour->line = malloc(contour->nb_line * sizeof(gshhs_line));
+    if ( contour->line == NULL )
+    {
+        fprintf(stderr,"Allocation impossible \n");
+        exit(EXIT_FAILURE);
+    }
+    
+    //printf("nb line: %d\n", contour->nb_line);
+    if (contour->nb_line>0)
+    {
+        for (c= 0; c <contour->nb_line; c++)
+        {
+            fread(&(contour->line[c]), sizeof(gshhs_line), 1, linefile);
+        }
+    }
+}
+
+void FreeLine(gshhs_contour *p)
+{
+
+    if (p->nb_line>0)
+    {
+        free(p->line); 
+        p->line=NULL;
+    }
+
+}
+
+void PolygonToGML(gpc_polygon *p, FILE *gmlfile, int translate)
+{
+
+    int c, v;
+    double x, y;
+    
+    fprintf(gmlfile, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    fprintf(gmlfile, "<dataset xmlns=\"http://www.safe.com/xml/schemas/FMEFeatures\" xmlns:fme=\"http://www.safe.com/xml/schemas/FMEFeatures\" xmlns:gml=\"http://www.opengis.net/gml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.safe.com/xml/schemas/FMEFeatures FMEFeatures.xsd\">\n");
+    fprintf(gmlfile, "<schemaFeatures>\n");
+    fprintf(gmlfile, "<gml:featureMember>\n");
+    fprintf(gmlfile, "<Feature>\n");
+    fprintf(gmlfile, "<featureType>JCSOutput</featureType>\n");
+    fprintf(gmlfile, "</Feature>\n");
+    fprintf(gmlfile, "</gml:featureMember>\n");
+    fprintf(gmlfile, "</schemaFeatures>\n");
+    fprintf(gmlfile, "<dataFeatures>\n");
+    fprintf(gmlfile, "\n");    
+    
+
+    for (c= 0; c < p->num_contours; c++)
+    {
+        
+        fprintf(gmlfile, "<gml:featureMember>\n");
+        fprintf(gmlfile, "<Feature>\n");
+        fprintf(gmlfile, "<featureType>JCSOutput</featureType>\n");
+        fprintf(gmlfile, "<property name=\"gml2_coordsys\"></property>\n");
+        fprintf(gmlfile, "<gml:PolygonProperty>\n");
+        fprintf(gmlfile, "<gml:Polygon>\n");
+        fprintf(gmlfile, "<gml:outerBoundaryIs>\n");
+        fprintf(gmlfile, "<gml:LinearRing>\n");
+        fprintf(gmlfile, "<gml:coordinates>\n");
+                
+        for (v= 0; v < p->contour[c].num_vertices; v++)
+        {
+            x=p->contour[c].vertex[v].x * GSHHS_SCL + translate;
+            y=p->contour[c].vertex[v].y * GSHHS_SCL;
+            fprintf(gmlfile, "%lf,%lf\n", x, y);
+        }
+        x=p->contour[c].vertex[0].x * GSHHS_SCL + translate;
+        y=p->contour[c].vertex[0].y * GSHHS_SCL;
+        fprintf(gmlfile, "%lf,%lf\n", x, y);
+
+
+        fprintf(gmlfile, "</gml:coordinates>\n");
+        fprintf(gmlfile, "</gml:LinearRing>\n");
+        fprintf(gmlfile, "</gml:outerBoundaryIs>\n");
+        fprintf(gmlfile, "</gml:Polygon>\n");
+        fprintf(gmlfile, "</gml:PolygonProperty>\n");
+        fprintf(gmlfile, "</Feature>\n");
+        fprintf(gmlfile, "</gml:featureMember>\n");
+        fprintf(gmlfile, "\n");    
+        fprintf(gmlfile, "\n");    
+   
+
+    }
+    
+    fprintf(gmlfile, "</dataFeatures>\n");
+    fprintf(gmlfile, "</dataset>\n");
+    
+    
 }
 
 
