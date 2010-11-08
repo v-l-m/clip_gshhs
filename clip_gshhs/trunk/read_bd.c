@@ -30,13 +30,9 @@ int main (int argc, char **argv)
         int p5;
     };
     
-
-    
-    FILE   *file_gpc;
     struct st_02 file_end[4];
 	
 	char bd_path[256];
-    char bd_gpc[256];
     char gpc_path[256];
     char gpc_file[256];
     
@@ -79,7 +75,7 @@ int main (int argc, char **argv)
             fprintf (stderr, "Impossible d'ouvrir le fichier %s\n", bd_end[i].file);
             exit (EXIT_FAILURE);
         }
-        header_end[i].version=  1;
+        header_end[i].version=  111;
         header_end[i].pasx=     pas[i];
         header_end[i].pasy=     pas[i];
         header_end[i].xmin=     0;
@@ -109,7 +105,7 @@ int main (int argc, char **argv)
                 {
                     fseek(file_end[i].file, 0L, SEEK_END);
                     pos_data = ftell(file_end[i].file);
-                    printf("pos_data: %d\n", pos_data);
+                    printf("pos_data: %ld\n", pos_data);
 
                     for (c=1; c<=5; c=c+1) 
                     {
@@ -144,7 +140,7 @@ int main (int argc, char **argv)
                         gpc_free_polygon(&polygon);
                     }
                     tab_data = (x/pas[i])*(180/pas[i]) + (y+90)/pas[i];
-                    printf("tab_data: %d\n\n", tab_data);
+                    printf("tab_data: %ld\n\n", tab_data);
                     fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(int), SEEK_SET);
                     fwrite(&pos_data, sizeof(long), 1, file_end[i].file);
 

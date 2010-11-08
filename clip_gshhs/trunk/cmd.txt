@@ -1,7 +1,7 @@
 [Map_Center]
-0 48 2000 2000
+0 0 4000 4000
 [Zoom]
-100
+11
 [Resol]
 c
 [Projection]
@@ -17,10 +17,10 @@ Mercator
 [Grib_Space]
 2
 [BD_Path]
-/home/steph/map/bd
+/home/steph/gshhs/new2/bd
 [BD_Name]
 poly-f-1.dat
 [Map_Path]
-/home/steph/map/map
+/home/steph/gshhs/new2/map
 [Map_Name]
 name
