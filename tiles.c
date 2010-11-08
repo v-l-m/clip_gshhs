@@ -150,7 +150,7 @@ int main (int argc, char **argv)
     
     // Initialisation de quelques variables
     // Dimension des tiles (pixel)
-    TileDim=256; // 256x256
+    TileDim=1024; // 256x256
     // Facteur de zoom (pour le dessin)
     zoom=(double)Nb_Tiles*(double)TileDim/360.0;
     printf("Zoom: %lf px/deg\n", zoom);
@@ -170,8 +170,8 @@ int main (int argc, char **argv)
     printf("long_min: %d, long_max: %d, origine_x: %lf\n", long_min_int, long_max_int, origine_x);
     
     //Détermination des latitudes mini, maxi, et origine image y
-    lat_min = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles)* M_PI/180);
-    lat_max = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile))*(360.0/Nb_Tiles)* M_PI/180);
+    lat_min = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles)* M_PI/180.0);
+    lat_max = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile))*(360.0/Nb_Tiles)* M_PI/180.0);
     printf("lat_min: %lf, lat_max: %lf\n", lat_min, lat_max);
     
     if (lat_min>=0)     lat_min_int=     floor(fabs(lat_min));
@@ -179,16 +179,18 @@ int main (int argc, char **argv)
     if (lat_max>=0)     lat_max_int=     ceil(fabs(lat_max));
     else                lat_max_int=    -floor(fabs(lat_max));
 
-    origine_y = -MercatorLatitudeSimple(lat_min)*180*zoom/M_PI;
+    //origine_y = -MercatorLatitudeSimple(lat_min)*180.0*zoom/M_PI;
+    origine_y = -((((double)Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles))*zoom;
 
     printf("lat_min: %d, lat_max: %d, origine_y: %lf\n", lat_min_int, lat_max_int, origine_y);
     
     
     // Création de l'image
-    bord=5;
+    bord=0;
     printf("Map_Width: %d, Map_Height: %d\n", TileDim, TileDim);
-    image = gdImageCreate(TileDim+2*bord, TileDim+2*bord);
-    image_f= gdImageCreate(TileDim, TileDim);
+    //image = gdImageCreate(TileDim+2*bord, TileDim+2*bord);
+    //image_f= gdImageCreate(TileDim, TileDim);
+    image = gdImageCreate(TileDim, TileDim);
     
     // Création des couleurs
     water_color =   gdImageColorAllocate(image, 99, 164, 255);
@@ -340,13 +342,14 @@ int main (int argc, char **argv)
     }
 
      
-    gdImageCopy(image_f, image, 0, 0, bord, bord, TileDim, TileDim);
+    //gdImageCopy(image_f, image, 0, 0, bord, bord, TileDim, TileDim);
      
     image_png = fopen(TileName, "w");
-    gdImagePng(image_f, image_png);
+    //gdImagePng(image_f, image_png);
+    gdImagePng(image, image_png);
     fclose(image_png);
     gdImageDestroy(image);
-    gdImageDestroy(image_f);
+    //gdImageDestroy(image_f);
     
     
     fclose(polyfile);
