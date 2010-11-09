@@ -45,6 +45,7 @@
 #define RATIO (R_MINOR/R_MAJOR)
 #define ECCENT (sqrt(1.0 - (RATIO * RATIO)))
 #define COM (0.5 * ECCENT)
+#define MERCATOR_LIMIT RadToDeg(atan(sinh(M_PI)))  //85.051129...
 
 static double DegToRad (double deg)
 {
@@ -64,8 +65,8 @@ double MercatorLongitude (double lon)
 
 double MercatorLatitude (double lat)
 {
-        if (lat>85) lat=85;
-        if (lat<-85) lat=-85; 
+        if (lat>MERCATOR_LIMIT) lat=MERCATOR_LIMIT;
+        if (lat<-MERCATOR_LIMIT) lat=-MERCATOR_LIMIT; 
         
         double phi = DegToRad(lat);
         double sinphi = sin(phi);
@@ -82,8 +83,8 @@ double MercatorLongitudeSimple (double lon)
 
 double MercatorLatitudeSimple (double lat)
 {
-        if (lat>85) lat=85;
-        if (lat<-85) lat=-85; 
+        if (lat>MERCATOR_LIMIT) lat=MERCATOR_LIMIT;
+        if (lat<-MERCATOR_LIMIT) lat=-MERCATOR_LIMIT; 
         
         double phi = DegToRad(lat);
         return log( tan( (M_PI/4) + (phi/2) ) );
