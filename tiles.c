@@ -150,7 +150,7 @@ int main (int argc, char **argv)
     
     // Initialisation de quelques variables
     // Dimension des tiles (pixel)
-    TileDim=1024; // 256x256
+    TileDim=256; // 256x256
     // Facteur de zoom (pour le dessin)
     zoom=(double)Nb_Tiles*(double)TileDim/360.0;
     printf("Zoom: %lf px/deg\n", zoom);
