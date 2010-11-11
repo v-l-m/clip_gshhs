@@ -67,7 +67,6 @@ int main (int argc, char **argv)
     int x, y;
     
     gdImagePtr image; /* Pointeur vers notre image */
-    gdImagePtr image_f; /* Pointeur vers notre image */
     FILE *image_png; /* Fichier image PNG */
     int water_color, coast_color, land_color, grid_color;
     int text_color;
@@ -81,8 +80,9 @@ int main (int argc, char **argv)
     char TileName[256];
     char bd_file[256];
     double zoom;
+    //int flag;
     //char resol[5];
-    int bord;
+    
         
     
     if (argc < 5 || argc > 6) {
@@ -144,6 +144,28 @@ int main (int argc, char **argv)
         fprintf (stderr, "Impossible d'ouvrir le fichier: %s\n", poly_file_name);
         exit(EXIT_FAILURE);
     }
+/*
+    // Flag
+    sscanf(argv[6], "%x", &flag);
+    printf("Flag: %d\n", flag);
+    printf("Flag: %d\n", flag & 1);
+    if (flag & 0x1)
+    {
+        printf("CoastLine\n");
+    }
+    if (flag & 0x2)
+    {
+        printf("Fill\n");
+    }
+    if (flag & 0x4)
+    {
+        printf("Rivers\n");
+    }
+    if (flag & 0x8)
+    {
+        printf("Borders\n");
+    }
+*/
     
     ReadPolygonFileHeader (polyfile, &header);
     //printf("Header_Pasx: %d\n", header.pasx);
@@ -186,10 +208,7 @@ int main (int argc, char **argv)
     
     
     // Création de l'image
-    bord=0;
     printf("Map_Width: %d, Map_Height: %d\n", TileDim, TileDim);
-    //image = gdImageCreate(TileDim+2*bord, TileDim+2*bord);
-    //image_f= gdImageCreate(TileDim, TileDim);
     image = gdImageCreate(TileDim, TileDim);
     
     // Création des couleurs
@@ -208,17 +227,17 @@ int main (int argc, char **argv)
             {
                 ReadPolygonFile(polyfile, x, y, header.pasx, header.pasy, &p1, &p2, &p3, &p4, &p5);
 
-                DrawPolygonFilled(image, &p1, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p2, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p3, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p4, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p5, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
+                DrawPolygonFilled(image, &p1, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p2, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p3, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p4, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, TileDim-origine_y, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -238,17 +257,17 @@ int main (int argc, char **argv)
             {
                 ReadPolygonFile(polyfile, x, y, header.pasx, header.pasy, &p1, &p2, &p3, &p4, &p5);
             
-                DrawPolygonFilled(image, &p1, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p2, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p3, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p4, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p5, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
+                DrawPolygonFilled(image, &p1, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p2, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p3, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p4, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, TileDim-origine_y, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -264,17 +283,17 @@ int main (int argc, char **argv)
             {
                 ReadPolygonFile(polyfile, x, y, header.pasx, header.pasy, &p1, &p2, &p3, &p4, &p5);
 
-                DrawPolygonFilled(image, &p1, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p2, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p3, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p4, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p5, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, land_color);
+                DrawPolygonFilled(image, &p1, origine_x-360*zoom, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p2, origine_x-360*zoom, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p3, origine_x-360*zoom, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p4, origine_x-360*zoom, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x-360*zoom, TileDim-origine_y, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord-360*zoom, TileDim-origine_y+bord, zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x-360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x-360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x-360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x-360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x-360*zoom, TileDim-origine_y, zoom, coast_color);
                
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -294,17 +313,17 @@ int main (int argc, char **argv)
             {
                 ReadPolygonFile(polyfile, x, y, header.pasx, header.pasy, &p1, &p2, &p3, &p4, &p5);
 
-                DrawPolygonFilled(image, &p1, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p2, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p3, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p4, origine_x+bord, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p5, origine_x+bord, TileDim-origine_y+bord, zoom, land_color);
+                DrawPolygonFilled(image, &p1, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p2, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p3, origine_x, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p4, origine_x, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x, TileDim-origine_y, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord, TileDim-origine_y+bord, zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, TileDim-origine_y, zoom, coast_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -320,17 +339,17 @@ int main (int argc, char **argv)
             {
                 ReadPolygonFile(polyfile, x, y, header.pasx, header.pasy, &p1, &p2, &p3, &p4, &p5);
 
-                DrawPolygonFilled(image, &p1, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p2, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p3, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, land_color);
-                DrawPolygonFilled(image, &p4, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, water_color);
-                DrawPolygonFilled(image, &p5, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, land_color);
+                DrawPolygonFilled(image, &p1, origine_x+360*zoom, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p2, origine_x+360*zoom, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p3, origine_x+360*zoom, TileDim-origine_y, zoom, land_color);
+                DrawPolygonFilled(image, &p4, origine_x+360*zoom, TileDim-origine_y, zoom, water_color);
+                DrawPolygonFilled(image, &p5, origine_x+360*zoom, TileDim-origine_y, zoom, land_color);
                 
-                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, coast_color);
-                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+bord+360*zoom, TileDim-origine_y+bord, zoom, coast_color);
+                DrawPolygonContour(image, &p1, x, y, header.pasx, header.pasy, origine_x+360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p2, x, y, header.pasx, header.pasy, origine_x+360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p3, x, y, header.pasx, header.pasy, origine_x+360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p4, x, y, header.pasx, header.pasy, origine_x+360*zoom, TileDim-origine_y, zoom, coast_color);
+                DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+360*zoom, TileDim-origine_y, zoom, coast_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -340,17 +359,11 @@ int main (int argc, char **argv)
             }
         }
     }
-
-     
-    //gdImageCopy(image_f, image, 0, 0, bord, bord, TileDim, TileDim);
      
     image_png = fopen(TileName, "w");
-    //gdImagePng(image_f, image_png);
     gdImagePng(image, image_png);
     fclose(image_png);
     gdImageDestroy(image);
-    //gdImageDestroy(image_f);
-    
     
     fclose(polyfile);
     

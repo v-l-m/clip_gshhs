@@ -473,7 +473,7 @@ void    DrawGrid(   gdImagePtr Image, int MapWidth, int MapHeight,
     double x1, y1, x2, y2;
     double LongGrid_Min, LatGrid_Min, LongGrid_Max, LatGrid_Max;
     double r;
-    char    txt[50];
+    char   txt[50];
      
     
     r = 180*Zoom/M_PI;
@@ -502,9 +502,9 @@ void    DrawGrid(   gdImagePtr Image, int MapWidth, int MapHeight,
         DegToHMS(txt, x, "long");
         //printf("%d\n", gdFontGetSmall()->h);
         gdImageFilledRectangle(Image, (int)round(x1-(strlen(txt) * gdFontGetSmall()->w/2)), (int)round(Image->sy - gdFontGetSmall()->h), (int)round(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(Image->sy), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(Image->sy - gdFontGetSmall()->h), txt, Text_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(Image->sy - gdFontGetSmall()->h), (unsigned char*)txt, Text_Color);
         gdImageFilledRectangle(Image, (int)round(x1-(strlen(txt) * gdFontGetSmall()->w/2)), 0, (int)round(x1+(strlen(txt) * gdFontGetSmall()->w /2)), (int)round(gdFontGetSmall()->h), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), 0, txt, Text_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(x1-(strlen(txt) * gdFontGetSmall()->w /2)), 0, (unsigned char*)txt, Text_Color);
     }
     
     for (y=LatGrid_Min; y<=LatGrid_Max; y=y+Grid_Space)
@@ -518,9 +518,9 @@ void    DrawGrid(   gdImagePtr Image, int MapWidth, int MapHeight,
 
         DegToHMS(txt, y, "lat");
         gdImageFilledRectangle(Image, 0, (int)round(y1 - gdFontGetSmall()->h/2), (int)round(strlen(txt) * gdFontGetSmall()->w), (int)round(y1 + gdFontGetSmall()->h/2), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), 0, (int)round(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
+        gdImageString(Image, gdFontGetSmall(), 0, (int)round(y1 - gdFontGetSmall()->h/2), (unsigned char*)txt, Text_Color);
         gdImageFilledRectangle(Image, (int)round(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)round(y1 - gdFontGetSmall()->h/2), (int)round(Image->sx), (int)round(y1 + gdFontGetSmall()->h/2), Grid_Color);
-        gdImageString(Image, gdFontGetSmall(), (int)round(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)round(y1 - gdFontGetSmall()->h/2), txt, Text_Color);
+        gdImageString(Image, gdFontGetSmall(), (int)round(Image->sx -(strlen(txt) * gdFontGetSmall()->w)), (int)round(y1 - gdFontGetSmall()->h/2), (unsigned char*)txt, Text_Color);
 
     }
 
@@ -555,9 +555,10 @@ void    DrawLine(   gdImagePtr Image, gshhs_contour *p,
             y1=p->line[c].y1;
             x2=p->line[c].x2;
             y2=p->line[c].y2;
+            //printf("x1: %lf - y1: %lf - x2: %lf - y2: %lf\n", x1, y1, x2, y2);
             
-            gdImageLine(Image,  (int)round(X_Origine + MercatorLongitudeSimple(x1 ) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y1 )  *r),
-                                    (int)round(X_Origine + MercatorLongitudeSimple(x2 ) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y2 )  *r),
+            gdImageLine(Image,  (int)round(X_Origine + MercatorLongitudeSimple(x1 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y1 * GSHHS_SCL)  *r),
+                                    (int)round(X_Origine + MercatorLongitudeSimple(x2 * GSHHS_SCL) *r), (int)round(Y_Origine - MercatorLatitudeSimple(y2 * GSHHS_SCL)  *r),
                                     Contour_Color);
             
         }
