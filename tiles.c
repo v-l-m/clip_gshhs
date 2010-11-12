@@ -41,7 +41,7 @@
 #include "gshhs.h"
 
 #define USAGE   "\n \
-Tiles Generator V0.2 - 08/11/2010\n \
+Tiles Generator V0.2 - 00:37 13/11/2010\n \
 stephpen@gmail.com\n \
 Usage:  tiles_g Nb_Tiles X_Tile Y_Tile bd_file.dat abc.png\n \
 Nb_Tiles:       nombre de tiles pour 360 deg\n \
