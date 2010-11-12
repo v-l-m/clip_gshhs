@@ -68,8 +68,9 @@ int main (int argc, char **argv)
     
     gdImagePtr image, image_f;  /* Pointeur vers notre image */
     FILE *image_png; /* Fichier image PNG */
-    int water_color, coast_color, land_color, grid_color;
-    int text_color;
+    int water_color, coast_color, land_color;
+	//int grid_color;
+    //int text_color;
     double long_max, long_min, lat_max, lat_min;
     int long_max_int, long_min_int, lat_max_int, lat_min_int;
     double origine_x, origine_y;
@@ -172,9 +173,9 @@ int main (int argc, char **argv)
     
     // Initialisation de quelques variables
     // Dimension des tiles (pixel)
-    TileDim=256; // 256x256
+    TileDim = 256; // 256x256
     // Facteur de zoom (pour le dessin)
-    zoom=(double)Nb_Tiles*(double)TileDim/360.0;
+    zoom = (double)Nb_Tiles * (double)TileDim / 360.0;
     printf("Zoom: %lf px/deg\n", zoom);
 
     //Détermination des longitudes mini, maxi, et origine image x
@@ -192,8 +193,8 @@ int main (int argc, char **argv)
     printf("long_min: %d, long_max: %d, origine_x: %lf\n", long_min_int, long_max_int, origine_x);
     
     //Détermination des latitudes mini, maxi, et origine image y
-    lat_min = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles)* M_PI/180.0);
-    lat_max = MercatorInverseLatitudeSimple((((double)Nb_Tiles/2)-(Y_Tile))*(360.0/Nb_Tiles)* M_PI/180.0);
+    lat_min = MercatorInverseLatitudeSimple((((double)Nb_Tiles / 2) - (Y_Tile+1)) * (360.0 / Nb_Tiles) * M_PI / 180.0);
+    lat_max = MercatorInverseLatitudeSimple((((double)Nb_Tiles / 2) - (Y_Tile)) * (360.0 / Nb_Tiles) * M_PI / 180.0);
     printf("lat_min: %lf, lat_max: %lf\n", lat_min, lat_max);
     
     if (lat_min>=0)     lat_min_int=     floor(fabs(lat_min));
@@ -201,8 +202,8 @@ int main (int argc, char **argv)
     if (lat_max>=0)     lat_max_int=     ceil(fabs(lat_max));
     else                lat_max_int=    -floor(fabs(lat_max));
 
-    origine_y = -MercatorLatitudeSimple(lat_min)*180.0*zoom/M_PI;
-    //origine_y = -((((double)Nb_Tiles/2)-(Y_Tile+1))*(360.0/Nb_Tiles))*zoom;
+    //origine_y = -MercatorLatitudeSimple(lat_min)*180.0*zoom/M_PI;
+    origine_y = -((((double)Nb_Tiles / 2) - (Y_Tile + 1)) * (360.0 / Nb_Tiles)) * zoom;
 
     printf("lat_min: %d, lat_max: %d, origine_y: %lf\n", lat_min_int, lat_max_int, origine_y);
     
@@ -210,7 +211,7 @@ int main (int argc, char **argv)
     // Création de l'image
     printf("Map_Width: %d, Map_Height: %d\n", TileDim, TileDim);
     bord=10;
-    image = gdImageCreate(TileDim+2*bord, TileDim+2*bord);
+    image = gdImageCreate(TileDim + 2 * bord, TileDim + 2 * bord);
     image_f= gdImageCreate(TileDim, TileDim);
     //image = gdImageCreate(TileDim, TileDim);
     
@@ -218,8 +219,8 @@ int main (int argc, char **argv)
     water_color =   gdImageColorAllocate(image, 99, 164, 255);
     land_color  =   gdImageColorAllocate(image, 255, 213, 162);
     coast_color =   gdImageColorAllocate(image, 204, 117, 59);
-    grid_color  =   gdImageColorAllocate(image, 250, 250, 250);
-    text_color  =   gdImageColorAllocate(image, 0, 0, 0); 
+    //grid_color  =   gdImageColorAllocate(image, 250, 250, 250);
+    //text_color  =   gdImageColorAllocate(image, 0, 0, 0); 
     
     // Cas où tout va bien
     if (long_min_int>=0 && long_max_int<=360)
