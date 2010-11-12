@@ -47,7 +47,7 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
        
     n_read = fread ((void *)&h, (size_t)sizeof (struct GSHHS), (size_t)1, gshhs_file);
     version = (h.flag >> 8) & 255;
-    flip = (version != GSHHS_DATA_VERSION);    /* Take as sign that byte-swabbing is needed */
+    flip = (version != GSHHS_DATA_RELEASE);    /* Take as sign that byte-swabbing is needed */
     
     while (n_read == 1) 
     {
