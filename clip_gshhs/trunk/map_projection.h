@@ -1,11 +1,11 @@
-/*
+/**
  *	Filename		: map_projection.h
 
- *	Created			: 07 January 2009 (23:13:57)
+ *	Created			: 07 January 2009 (23:08:51)
  *	Created by		: StephPen - stephpen@gmail.com
 
- *	Last Updated	: 08 January 2009 (23:10:46)
- *	Updated by		: steph
+ *	Last Updated	: 23:25 21/11/2010
+ *	Updated by		: StephPen - stephpen@gmail.com
 
  *	(c) 2008 by Stephane PENOT
  *	    See COPYING file for copying and redistribution conditions.
