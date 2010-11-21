@@ -1,31 +1,31 @@
 /**
- *	Filename		: tiles_g.c
+ *    Filename          : tiles_g.c
 
- *	Created			: 07 May 2009 (23:08:51)
- *	Created by		: StephPen - stephpen@gmail.com
+ *    Created           : 07 May 2009 (23:08:51)
+ *    Created by        : StephPen - stephpen@gmail.com
 
- *	Last Updated	: 23:24 21/11/2010
- *	Updated by		: StephPen - stephpen@gmail.com
+ *    Last Updated      : 23:24 21/11/2010
+ *    Updated by        : StephPen - stephpen@gmail.com
 
- *	(c) 2008 by Stephane PENOT
- *	    See COPYING file for copying and redistribution conditions.
- *	 
- *	    This program is free software; you can redistribute it and/or modify
- *	    it under the terms of the GNU General Public License as published by
- *	    the Free Software Foundation; version 2 of the License.
- *	 
- *	    This program is distributed in the hope that it will be useful,
- *	    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *	    GNU General Public License for more details.
- *	 
- *	Comments		: 
- *	 
- *	 
- *	 
- *	 
- *	 
- *	Contact: <stephpen@gmail.com>
+ *    (c) 2008 by Stephane PENOT
+ *        See COPYING file for copying and redistribution conditions.
+ *     
+ *        This program is free software; you can redistribute it and/or modify
+ *        it under the terms of the GNU General Public License as published by
+ *        the Free Software Foundation; version 2 of the License.
+ *     
+ *        This program is distributed in the hope that it will be useful,
+ *        but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *        GNU General Public License for more details.
+ *     
+ *    Comments          : 
+ *     
+ *     
+ *     
+ *     
+ *     
+ *    Contact: <stephpen@gmail.com>
 */
 
 
@@ -69,7 +69,7 @@ int main (int argc, char **argv)
     gdImagePtr image, image_f;  /* Pointeur vers notre image */
     FILE *image_png; /* Fichier image PNG */
     int water_color, coast_color, land_color;
-	//int grid_color;
+    //int grid_color;
     //int text_color;
     double long_max, long_min, lat_max, lat_min;
     int long_max_int, long_min_int, lat_max_int, lat_min_int;
@@ -81,8 +81,6 @@ int main (int argc, char **argv)
     char TileName[256];
     char bd_file[256];
     double zoom;
-    //int flag;
-    //char resol[5];
     int bord;
         
     
@@ -145,28 +143,6 @@ int main (int argc, char **argv)
         fprintf (stderr, "Impossible d'ouvrir le fichier: %s\n", poly_file_name);
         exit(EXIT_FAILURE);
     }
-/*
-    // Flag
-    sscanf(argv[6], "%x", &flag);
-    printf("Flag: %d\n", flag);
-    printf("Flag: %d\n", flag & 1);
-    if (flag & 0x1)
-    {
-        printf("CoastLine\n");
-    }
-    if (flag & 0x2)
-    {
-        printf("Fill\n");
-    }
-    if (flag & 0x4)
-    {
-        printf("Rivers\n");
-    }
-    if (flag & 0x8)
-    {
-        printf("Borders\n");
-    }
-*/
     
     ReadPolygonFileHeader (polyfile, &header);
     //printf("Header_Pasx: %d\n", header.pasx);
@@ -370,7 +346,6 @@ int main (int argc, char **argv)
     image_png = fopen(TileName, "w");
     gdImagePng(image_f, image_png);
 
-    //gdImagePng(image, image_png);
     fclose(image_png);
     gdImageDestroy(image);
     gdImageDestroy(image_f);
