@@ -75,7 +75,7 @@ int main (int argc, char **argv)
             fprintf (stderr, "Impossible d'ouvrir le fichier %s\n", bd_end[i].file);
             exit (EXIT_FAILURE);
         }
-        header_end[i].version=  111;
+        header_end[i].version=  210;
         header_end[i].pasx=     pas[i];
         header_end[i].pasy=     pas[i];
         header_end[i].xmin=     0;

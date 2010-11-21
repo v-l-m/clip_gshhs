@@ -175,7 +175,7 @@ int main (int argc, char **argv)
     // Dimension des tiles (pixel)
     TileDim = 256; // 256x256
     // Facteur de zoom (pour le dessin)
-    zoom = (double)Nb_Tiles * (double)TileDim / 360.0;
+    zoom = (double)Nb_Tiles * (double)TileDim  / 360.0;
     printf("Zoom: %lf px/deg\n", zoom);
 
     //Détermination des longitudes mini, maxi, et origine image x
@@ -207,7 +207,7 @@ int main (int argc, char **argv)
 
     printf("lat_min: %d, lat_max: %d, origine_y: %lf\n", lat_min_int, lat_max_int, origine_y);
     
-    
+    printf("%lf\n", MercatorInverseLatitudeSimple(-1* (256-origine_y)*M_PI / (180.0*zoom)));
     // Création de l'image
     printf("Map_Width: %d, Map_Height: %d\n", TileDim, TileDim);
     bord=10;
@@ -218,7 +218,7 @@ int main (int argc, char **argv)
     // Création des couleurs
     water_color =   gdImageColorAllocate(image, 99, 164, 255);
     land_color  =   gdImageColorAllocate(image, 255, 213, 162);
-    coast_color =   gdImageColorAllocate(image, 204, 117, 59);
+    coast_color =   gdImageColorAllocate(image, 9, 120, 171);
     //grid_color  =   gdImageColorAllocate(image, 250, 250, 250);
     //text_color  =   gdImageColorAllocate(image, 0, 0, 0); 
     

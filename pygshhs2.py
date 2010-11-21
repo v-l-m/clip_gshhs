@@ -32,7 +32,7 @@ import os.path
 import sys
 
 
-path = '/home/spenot/gshhs/'
+path = '/home/steph/gshhs/new2/'
 path_BD = path + 'bd/'
 if len(sys.argv) < 2 :
     print "Use pygshhs2.py [c, l, i, h, f] !"

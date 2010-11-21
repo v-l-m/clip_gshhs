@@ -28,7 +28,7 @@ import sys
 
 
 
-path = '/home/spenot/gshhs/'
+path = '/home/steph/gshhs/new2/'
 path_BD = path + 'bd/'
 
 if len(sys.argv) < 2 :
