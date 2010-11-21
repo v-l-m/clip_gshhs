@@ -1,11 +1,11 @@
-/*
+/**
  *	Filename		: map_functions.c
 
  *	Created			: 07 January 2009 (23:08:16)
  *	Created by		: StephPen - stephpen@gmail.com
 
- *	Last Updated	: 08 January 2009 (23:09:52)
- *	Updated by		: steph
+ *	Last Updated	: 23:23 21/11/2010
+ *	Updated by		: StephPen - stephpen@gmail.com
 
  *	(c) 2008 by Stephane PENOT
  *	    See COPYING file for copying and redistribution conditions.
