@@ -1,6 +1,7 @@
 #!/bin/bash
 
-PATHBD=/home/spenot/gshhs
+#PATHBD=/home/spenot/gshhs
+PATHBD=./
 
 for RESOL in c l i h f; do
     echo Resolution $RESOL
