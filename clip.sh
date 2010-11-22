@@ -2,7 +2,8 @@
 
 RESOL=$1
 
-PATHBD=/home/spenot/gshhs
+#PATHBD=/home/spenot/gshhs
+PATHBD=./
 
 
     echo Resolution $RESOL

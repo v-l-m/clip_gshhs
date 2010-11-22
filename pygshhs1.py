@@ -40,7 +40,8 @@ import sys
 
 
 
-path = '/home/spenot/gshhs/'
+#path = '/home/spenot/gshhs/'
+path = './'
 path_BD = path + 'bd/'
 
 
