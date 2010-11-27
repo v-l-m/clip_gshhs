@@ -577,7 +577,7 @@ void ReadLineFile(  FILE *linefile,
 
 
     tab_data = x*180 + (y+90);
-    fseek(linefile, sizeof(PolygonFileHeader) + tab_data*sizeof(int), SEEK_SET);
+    fseek(linefile, sizeof(PolygonFileHeader) + tab_data*sizeof(long), SEEK_SET);
     fread(&pos_data, sizeof(long), 1, linefile);
     
     fseek(linefile, pos_data, SEEK_SET);
