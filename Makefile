@@ -33,7 +33,7 @@ CC = gcc
 CFLAGS = -Wall -O3 -std=gnu99
 LDFLAGS = -lm -lgd -lpng
 
-EXEC=readgshhs read_bd map_g tiles_g readcontour map2gml tiles_topo tiles_debug
+EXEC=readgshhs read_bd map_g tiles_g readcontour map2gml tiles_debug
 
 all: $(EXEC)
 
@@ -79,12 +79,6 @@ map2gml: map2gml.o map_functions.o map_projection.o
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-# Tiles_Topo
-tiles_topo: tiles_topo.o map_functions.o map_projection.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
 
 # Tiles_Debug
 tiles_debug: tiles_g.o map_functions_debug.o map_projection.o
