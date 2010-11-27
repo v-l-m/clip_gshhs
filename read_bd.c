@@ -172,7 +172,7 @@ int main (int argc, char **argv)
                     }
                     tab_data = (x/pas[i])*(180/pas[i]) + (y+90)/pas[i];
                     printf("tab_data: %ld\n\n", tab_data);
-                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(int), SEEK_SET);
+                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(long), SEEK_SET);
                     fwrite(&pos_data, sizeof(long), 1, file_end[i].file);
 
                 }

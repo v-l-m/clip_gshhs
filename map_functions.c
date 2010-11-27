@@ -214,7 +214,7 @@ void ReadPolygonFile (FILE *polyfile,
 
 
     tab_data = (x/pas_x)*(180/pas_y) + (y+90)/pas_y;
-    fseek(polyfile, sizeof(PolygonFileHeader) + tab_data*sizeof(int), SEEK_SET);
+    fseek(polyfile, sizeof(PolygonFileHeader) + tab_data*sizeof(long), SEEK_SET);
     fread(&pos_data, sizeof(long), 1, polyfile);
     
     //printf("tabdata: %d, posdata: %d\n", tab_data, pos_data);
