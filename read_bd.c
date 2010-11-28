@@ -72,8 +72,8 @@ int main (int argc, char **argv)
     int pas[] = {45, 15, 5, 1};
     int level = 3;
     int i;
-    long pos_data;
-    long tab_data;
+    int pos_data;
+    int tab_data;
         
     int x, y;
     int c;
@@ -125,7 +125,7 @@ int main (int argc, char **argv)
         {
             for (y=-90; y<90; y=y+pas[i])
             {
-                fwrite(&pos_data, sizeof(long), 1, file_end[i].file);
+                fwrite(&pos_data, sizeof(int), 1, file_end[i].file);
             }
         }
         for (x=0; x<360; x=x+pas[i])
@@ -136,7 +136,7 @@ int main (int argc, char **argv)
                 {
                     fseek(file_end[i].file, 0L, SEEK_END);
                     pos_data = ftell(file_end[i].file);
-                    printf("pos_data: %ld\n", pos_data);
+                    printf("pos_data: %d\n", pos_data);
 
                     for (c=1; c<=5; c=c+1) 
                     {
@@ -171,9 +171,9 @@ int main (int argc, char **argv)
                         gpc_free_polygon(&polygon);
                     }
                     tab_data = (x/pas[i])*(180/pas[i]) + (y+90)/pas[i];
-                    printf("tab_data: %ld\n\n", tab_data);
-                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(long), SEEK_SET);
-                    fwrite(&pos_data, sizeof(long), 1, file_end[i].file);
+                    printf("tab_data: %d\n\n", tab_data);
+                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(int), SEEK_SET);
+                    fwrite(&pos_data, sizeof(int), 1, file_end[i].file);
 
                 }
             }
