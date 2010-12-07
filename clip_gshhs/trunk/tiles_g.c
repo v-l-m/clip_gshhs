@@ -2,10 +2,10 @@
  *    Filename          : tiles_g.c
 
  *    Created           : 07 May 2009 (23:08:51)
- *    Created by        : StephPen - stephpen@gmail.com
+ *    Created by        : StephPen - stephpen @at@ gmail . com
 
  *    Last Updated      : 23:24 21/11/2010
- *    Updated by        : StephPen - stephpen@gmail.com
+ *    Updated by        : StephPen - stephpen @at@ gmail . com
 
  *    (c) 2008 by Stephane PENOT
  *        See COPYING file for copying and redistribution conditions.
@@ -25,7 +25,7 @@
  *
  *
  *
- *    Contact: <stephpen@gmail.com>
+ *    Contact: <stephpen @at@ gmail . com>
 */
 
 
@@ -48,7 +48,7 @@
   | | | | |  __/\\__ \\ |_| |  __/ | | |  __/ | | (_| | || (_) | |   \n \
   |_| |_|_|\\___||___/\\____|\\___|_| |_|\\___|_|  \\__,_|\\__\\___/|_|   \n \
                 Tiles Generator V0.3 - 07/12/2010 \n \
-                       stephpen@gmail.com\n\n"
+                       stephpen @at@ gmail . com\n\n"
 
 
 #define USAGE   "\n \
