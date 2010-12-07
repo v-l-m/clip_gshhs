@@ -48,7 +48,7 @@
   | | | | |  __/\\__ \\ |_| |  __/ | | |  __/ | | (_| | || (_) | |   \n \
   |_| |_|_|\\___||___/\\____|\\___|_| |_|\\___|_|  \\__,_|\\__\\___/|_|   \n \
                 Tiles Generator V0.3 - 07/12/2010 \n \
-                       stephpen @at@ gmail . com\n\n"
+                    stephpen @at@ gmail . com\n\n"
 
 
 #define USAGE   "\n \
