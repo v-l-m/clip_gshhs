@@ -2,10 +2,10 @@
 #    Filename           : Makefile
 #
 #    Created            : 07 January 2009 (23:08:51)
-#    Created by         : StephPen - stephpen@gmail.com
+#    Created by         : StephPen - stephpen @at@ gmail . com
 #
 #    Last Updated       : 23:27 21/11/2010
-#    Updated by         : StephPen - stephpen@gmail.com
+#    Updated by         : StephPen - stephpen @at@ gmail . com
 #
 #    (c) 2008 by Stephane PENOT
 #        See COPYING file for copying and redistribution conditions.
@@ -25,7 +25,7 @@
 #     
 #     
 #     
-#    Contact: <stephpen@gmail.com>
+#    Contact: <stephpen @at@ gmail . com>
 #
 
 
@@ -79,13 +79,6 @@ map2gml: map2gml.o map_functions.o map_projection.o
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-
-# Tiles_Debug
-tiles_debug: tiles_g.o map_functions_debug.o map_projection.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
 
 # Readlines
 readlines: readlines.o read_gshhs.o map_functions.o map_projection.o

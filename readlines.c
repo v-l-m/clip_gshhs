@@ -2,10 +2,10 @@
  *    Filename          : readlines.c
 
  *    Created           : 11:40 05/12/2010
- *    Created by        : StephPen - stephpen@gmail.com
+ *    Created by        : StephPen - stephpen @at@ gmail . com
 
  *    Last Updated      : 11:40 05/12/2010
- *    Updated by        : StephPen - stephpen@gmail.com
+ *    Updated by        : StephPen - stephpen @at@ gmail . com
 
  *    (c) 2008 by Stephane PENOT
  *        See COPYING file for copying and redistribution conditions.
@@ -25,7 +25,7 @@
  *
  *
  *
- *    Contact: <stephpen@gmail.com>
+ *    Contact: <stephpen @at@ gmail . com>
 */
 
 #include <stdlib.h>
