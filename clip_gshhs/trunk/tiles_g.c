@@ -241,6 +241,13 @@ int main (int argc, char **argv)
 
     int option_index = 0;
     
+    if (argc == 1)
+    {
+        fprintf (stderr, TILESGENERATOR);
+        fprintf (stderr, USAGE);
+        exit(EXIT_SUCCESS);
+    }
+    
     printf(TILESGENERATOR);
 
     do
@@ -953,7 +960,7 @@ int main (int argc, char **argv)
     if (flag_borders)
         fclose(bordersfile);
 
-    return 0;
+    exit(EXIT_SUCCESS);
 
 }
 
