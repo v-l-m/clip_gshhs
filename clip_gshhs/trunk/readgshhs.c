@@ -65,8 +65,11 @@ int main (int argc, char **argv)
     /* gestion de la ligne de commande */
     if (argc < 2 || argc > 3) 
     {
-        fprintf (stderr, "gshhs v. %s ASCII export tool\n", GSHHS_PROG_VERSION);
-        fprintf (stderr, "usage:  readgshhs [f|h|i|l|c] \n");
+        fprintf (stderr, "ReadGSHHS\n");
+        fprintf (stderr, "usage:  readgshhs GSHHS_File\n");
+        fprintf (stderr, "GSHHS_file: [c, l, i, h, f]\n");
+        fprintf (stderr, "GSHHS_file must be in ./gshhs/ directory \n");
+        fprintf (stderr, "./bd/ directory must be exist\n");
         fprintf (stderr, "Thanks\n");
         exit (EXIT_FAILURE);
     }

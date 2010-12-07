@@ -296,10 +296,10 @@ int main (int argc, char **argv)
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 */
                 ReadLineFile(bordersfile, x, y, &borders_contour);
-                DrawLine(image, &borders_contour, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
+                DrawLine(image, &borders_contour, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
 
                 ReadLineFile(riversfile, x, y, &rivers_contour);
-                DrawLine(image, &rivers_contour, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawLine(image, &rivers_contour, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -331,10 +331,10 @@ int main (int argc, char **argv)
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 */
                 ReadLineFile(bordersfile, x, y, &borders_contour);
-                DrawLine(image, &borders_contour, x, y, header.pasx, header.pasy, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
+                DrawLine(image, &borders_contour, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
 
                 ReadLineFile(riversfile, x, y, &rivers_contour);
-                DrawLine(image, &rivers_contour, x, y, header.pasx, header.pasy, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawLine(image, &rivers_contour, origine_x-360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -373,10 +373,10 @@ int main (int argc, char **argv)
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 */
                 ReadLineFile(bordersfile, x, y, &borders_contour);
-                DrawLine(image, &borders_contour, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
+                DrawLine(image, &borders_contour, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
 
                 ReadLineFile(riversfile, x, y, &rivers_contour);
-                DrawLine(image, &rivers_contour, x, y, header.pasx, header.pasy, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawLine(image, &rivers_contour, origine_x, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
@@ -408,10 +408,10 @@ int main (int argc, char **argv)
                 DrawPolygonContour(image, &p5, x, y, header.pasx, header.pasy, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, coast_color);
                 */
                 ReadLineFile(bordersfile, x, y, &borders_contour);
-                DrawLine(image, &borders_contour, x, y, header.pasx, header.pasy, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
+                DrawLine(image, &borders_contour, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, borders_color);
 
                 ReadLineFile(riversfile, x, y, &rivers_contour);
-                DrawLine(image, &rivers_contour, x, y, header.pasx, header.pasy, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
+                DrawLine(image, &rivers_contour, origine_x+360*cmd.Zoom, cmd.MapHeight-origine_y, cmd.Zoom, water_color);
                 
                 FreePolygon(&p1);
                 FreePolygon(&p2);
