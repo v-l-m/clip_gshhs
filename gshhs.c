@@ -48,7 +48,7 @@ int main (int argc, char **argv)
     int  OK, level, version, greenwich, river, src, msformat = 0;
     struct    POINT p;
     struct GSHHS h;
-        
+
     info = single = error = ID = 0;
     for (k = 1; k < argc; k++) {
         if (argv[k][0] == '-') {    /* Option switch */
@@ -89,11 +89,11 @@ int main (int argc, char **argv)
         fprintf (stderr, "gshhs:  Could not find file %s.\n", file);
         exit (EXIT_FAILURE);
     }
-        
+
     n_read = fread ((void *)&h, (size_t)sizeof (struct GSHHS), (size_t)1, fp);
     version = (h.flag >> 8) & 255;
     flip = (version != GSHHS_DATA_RELEASE);    /* Take as sign that byte-swabbing is needed */
-    
+
     while (n_read == 1) {
         if (flip) {
             h.id = swabi4 ((unsigned int)h.id);
@@ -124,7 +124,7 @@ int main (int argc, char **argv)
         f_area = 0.1 * h.area_full;                /* Now im km^2 */
 
         OK = (!single || h.id == ID);
-        
+
         if (!msformat) c = kind[line];
         if (OK) {
             if (line)
@@ -159,7 +159,7 @@ int main (int argc, char **argv)
         max_east = 180000000;    /* Only Eurasia needs 270 */
         n_read = fread((void *)&h, (size_t)sizeof (struct GSHHS), (size_t)1, fp);
     }
-        
+
     fclose (fp);
 
     exit (EXIT_SUCCESS);
