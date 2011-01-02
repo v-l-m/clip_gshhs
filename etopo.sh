@@ -45,6 +45,6 @@ echo Passe 1
 ./compile_etopo $ETOPO $ETOPO.dat
 
 echo Passe finale
-./compile_etopo_060 $ETOPO.dat $ETOPO_DAT
+./compile_etopo_060 $ETOPO.dat $ETOPO_DAT.dat
 
 rm $ETOPO.dat
