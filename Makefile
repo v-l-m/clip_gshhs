@@ -33,7 +33,7 @@ CC = gcc
 CFLAGS = -Wall -O3 -std=gnu99
 LDFLAGS = -lm -lgd -lpng
 
-EXEC=readgshhs read_bd map_g tiles_g readcontour map2gml clipline readlines compile_etopo compile_etopo_060
+EXEC=readgshhs read_bd map_g tiles_g readcontour map2gml readlines compile_etopo compile_etopo_060
 
 all: $(EXEC)
 
@@ -81,13 +81,6 @@ map2gml: map2gml.o map_functions.o map_projection.o
 
 # Tiles_Generator
 tiles_topo: tiles_topo.o map_functions.o map_projection.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-# Clip_Line
-clipline: clip_line2.o map_functions.o map_projection.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
