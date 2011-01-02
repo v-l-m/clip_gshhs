@@ -79,13 +79,6 @@ map2gml: map2gml.o map_functions.o map_projection.o
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-# Tiles_Generator
-tiles_topo: tiles_topo.o map_functions.o map_projection.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-%.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
-
 # Readlines
 readlines: readlines.o read_gshhs.o map_functions.o map_projection.o
 	$(CC) -o $@ $^ $(LDFLAGS)
