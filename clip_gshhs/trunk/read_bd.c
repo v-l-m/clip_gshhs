@@ -1,31 +1,31 @@
 /**
- *    Filename        : read_bd.c
+ *  Filename          : read_bd.c
+ *  Created by        : StephPen - stephpen@gmail.com
+ *  Update            : 11:14 02/01/2011
 
- *    Created            : 07 January 2009 (23:13:57)
- *    Created by        : StephPen - stephpen @at@ gmail . com
-
- *    Last Updated    : 23:24 21/11/2010
- *    Updated by        : StephPen - stephpen @at@ gmail . com
-
- *    (c) 2008 by Stephane PENOT
- *        See COPYING file for copying and redistribution conditions.
- *     
- *        This program is free software; you can redistribute it and/or modify
- *        it under the terms of the GNU General Public License as published by
- *        the Free Software Foundation; version 2 of the License.
- *     
- *        This program is distributed in the hope that it will be useful,
- *        but WITHOUT ANY WARRANTY; without even the implied warranty of
- *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *        GNU General Public License for more details.
- *     
- *    Comments        : 
- *     
- *     
- *     
- *     
- *     
- *    Contact: <stephpen @at@ gmail . com>
+ *  (c) 2008 by Stephane PENOT
+ *      See COPYING file for copying and redistribution conditions.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Comments          :
+ *
+ *
+ *
+ *
+ *
+ *  Contact: <stephpen@gmail.com>
 */
 
 
@@ -37,15 +37,15 @@ int get_gpc_path(char *gpc_path, char *bd_path, int x, int y, int *pas, int leve
 
 int main (int argc, char **argv)
 {
-    
+
     struct st_01 {
         char file[256];
     };
-    
+
     struct st_02 {
         FILE   *file;
     };
-    
+
     struct header_01 {
         int version;
         int pasx;
@@ -60,43 +60,43 @@ int main (int argc, char **argv)
         int p4;
         int p5;
     };
-    
+
     struct st_02 file_end[4];
-    
+
     char bd_path[256];
     char gpc_path[256];
     char gpc_file[256];
-    
+
     struct st_01 bd_end[4];
-    
+
     int pas[] = {45, 15, 5, 1};
     int level = 3;
     int i;
     int pos_data;
     int tab_data;
-        
+
     int x, y;
     int c;
-    
+
     struct header_01 header_end[4];
-    
+
     FILE *polygon_file;
     gpc_polygon polygon;
-    
+
     int n_contour;
     int n_point;
-    
-    
+
+
     if (argc < 2 || argc > 3) {
         fprintf (stderr, "Sorry !!\n");
         fprintf (stderr, "Usage:  read_bd [f|h|i|l|c]\n\n");
-        
+
         exit (EXIT_FAILURE);
     }
-    
+
     pos_data = 0;
     sprintf(bd_path, "./bd/bd_%s", argv[1]);
-    
+
     for (i=0; i<=level; i++)
     {
         printf("i: %d\n", i);
@@ -118,9 +118,9 @@ int main (int argc, char **argv)
         header_end[i].p3=       3;
         header_end[i].p4=       4;
         header_end[i].p5=       5;
-        
+
         fwrite(&header_end[i], sizeof(header_end[i]), 1, file_end[i].file);
-        
+
         for (x=0; x<360; x=x+pas[i])
         {
             for (y=-90; y<90; y=y+pas[i])
@@ -138,26 +138,26 @@ int main (int argc, char **argv)
                     pos_data = ftell(file_end[i].file);
                     printf("pos_data: %d\n", pos_data);
 
-                    for (c=1; c<=5; c=c+1) 
+                    for (c=1; c<=5; c=c+1)
                     {
                         sprintf(gpc_file, "%s/%s%d.dat", gpc_path, argv[1], c);
                         printf("X: %i, Y: %i, File: %s\n", x, y, gpc_file);
-                
+
                         if ((polygon_file = fopen(gpc_file, "r")) == NULL )
                         {
                             fprintf (stderr, "Impossible d'ouvrir le fichier %s\n", gpc_file);
                             exit (EXIT_FAILURE);
                         }
-                
+
                         gpc_read_polygon(polygon_file, 1, &polygon);      /* Lecture du fichier polygone*/
-                
+
                         printf("num_contour: %d\n", polygon.num_contours);
-                        
+
                         fwrite(&polygon.num_contours, sizeof(int), 1, file_end[i].file);
                         for (n_contour=0; n_contour<polygon.num_contours; n_contour++)
                         {
                             fwrite(&polygon.hole[n_contour], sizeof(int), 1, file_end[i].file);
-                        
+
                             fwrite(&polygon.contour[n_contour].num_vertices, sizeof(int), 1, file_end[i].file);
                             for (n_point=0; n_point<polygon.contour[n_contour].num_vertices; n_point++)
                             {
@@ -165,14 +165,14 @@ int main (int argc, char **argv)
                                 fwrite(&polygon.contour[n_contour].vertex[n_point].y, sizeof(double), 1, file_end[i].file);
                             }
                         }
-                    
-                
+
+
                         fclose(polygon_file);
                         gpc_free_polygon(&polygon);
                     }
                     tab_data = (x/pas[i])*(180/pas[i]) + (y+90)/pas[i];
                     printf("tab_data: %d\n\n", tab_data);
-                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(int), SEEK_SET);
+                    fseek(file_end[i].file, sizeof(header_end[i]) + tab_data*sizeof(int), SEEK_SET); //erreur + tab_data*sizeof(long)
                     fwrite(&pos_data, sizeof(int), 1, file_end[i].file);
 
                 }
@@ -182,23 +182,23 @@ int main (int argc, char **argv)
     fclose(file_end[i].file);
 
     }
-    
+
     return 0;
-    
+
 }
 
 int get_gpc_path(char *gpc_path, char *bd_path, int x, int y, int *pas, int level)
 {
-    
+
     int xo, yo;
     int xe, ye;
     int nb_pas;
     char buffer[256];
     int i;
-    
+
     nb_pas=(sizeof(pas) / sizeof(pas[0]));
     sprintf(buffer, "%s", bd_path);
-    
+
     for (i=0; i<=level; i++)
     {
         xo=(x/pas[i])*pas[i];
@@ -208,7 +208,7 @@ int get_gpc_path(char *gpc_path, char *bd_path, int x, int y, int *pas, int leve
         sprintf(gpc_path, "%s/%d_%d_to_%d_%d", buffer, xo, yo, xe, ye);
         sprintf(buffer, "%s", gpc_path);
     }
-    
+
     return 1;
 
 }

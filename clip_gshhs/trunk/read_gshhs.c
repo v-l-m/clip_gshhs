@@ -1,32 +1,33 @@
 /**
- *    Filename        : read_gshhs.c
+ *  Filename          : read_gshhs.c
+ *  Created by        : StephPen - stephpen@gmail.com
+ *  Update            : 11:14 02/01/2011
 
- *    Created            : 07 May 2009 (23:08:51)
- *    Created by        : StephPen - stephpen @at@ gmail . com
-
- *    Last Updated    : 23:24 21/11/2010
- *    Updated by        : StephPen - stephpen @at@ gmail . com
-
- *    (c) 2008 by Stephane PENOT
- *        See COPYING file for copying and redistribution conditions.
- *     
- *        This program is free software; you can redistribute it and/or modify
- *        it under the terms of the GNU General Public License as published by
- *        the Free Software Foundation; version 2 of the License.
- *     
- *        This program is distributed in the hope that it will be useful,
- *        but WITHOUT ANY WARRANTY; without even the implied warranty of
- *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *        GNU General Public License for more details.
- *     
- *    Comments        : 
- *     
- *     
- *     
- *     
- *     
- *    Contact: <stephpen @at@ gmail . com>
+ *  (c) 2008 by Stephane PENOT
+ *      See COPYING file for copying and redistribution conditions.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Comments          :
+ *
+ *
+ *
+ *
+ *
+ *  Contact: <stephpen@gmail.com>
 */
+
 
 #include "gshhs.h"
 #include <stdlib.h>
@@ -53,17 +54,17 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
     int     i = 0;
     /*Polygone *tableau;*/
     gshhs_vertex_list *temp_polygons;
-    
+
     struct POINT p;
     struct GSHHS h;
-       
+
     n_read = fread ((void *)&h, (size_t)sizeof (struct GSHHS), (size_t)1, gshhs_file);
     version = (h.flag >> 8) & 255;
     flip = (version != GSHHS_DATA_RELEASE);    /* Take as sign that byte-swabbing is needed */
-    
-    while (n_read == 1) 
+
+    while (n_read == 1)
     {
-        if (flip) 
+        if (flip)
         {
             h.id = swabi4 ((unsigned int)h.id);
             h.n  = swabi4 ((unsigned int)h.n);
@@ -74,7 +75,7 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
             h.area  = swabi4 ((unsigned int)h.area);
             h.flag  = swabi4 ((unsigned int)h.flag);
         }
-        
+
         if (h.id == 0)
         {
             polygons->contour = NULL;
@@ -103,12 +104,12 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
                 polygons->contour = temp_polygons;
             }
         }
-        
+
         polygons->contour[h.id].id = h.id;
         if (h.south == -90000000) {
             h.n = h.n + 3;
         }
-        
+
         polygons->contour[h.id].nb_point    = h.n;
         polygons->contour[h.id].level       = h.flag & 255;
         polygons->contour[h.id].version     = (h.flag >> 8) & 255;
@@ -120,7 +121,7 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
         polygons->contour[h.id].lat_max     = h.north;
         polygons->contour[h.id].type        = (h.area) ? 0 : 1;        /* Either Polygon (0) or Line (1) (if no area) */
         polygons->contour[h.id].area        = h.area;
-        
+
         polygons->contour[h.id].vertex = NULL;
         polygons->contour[h.id].vertex = malloc(h.n * sizeof(gshhs_vertex));
         if ( polygons->contour[h.id].vertex == NULL )
@@ -144,20 +145,20 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
             printf("Latitude min: %8d\n", polygons->contour[h.id].lat_min);
             printf("Latitude max: %8d\n", polygons->contour[h.id].lat_max);
         }
-        
-        for (k = 0; k < h.n; k++) 
+
+        for (k = 0; k < h.n; k++)
         {
-            if (fread ((void *)&p, (size_t)sizeof(struct POINT), (size_t)1, gshhs_file) != 1) 
+            if (fread ((void *)&p, (size_t)sizeof(struct POINT), (size_t)1, gshhs_file) != 1)
             {
                 fprintf (stderr, "gshhs:  Error reading file\n");
                 exit (EXIT_FAILURE);
             }
-            if (flip) 
+            if (flip)
             {
                 p.x = swabi4 ((unsigned int)p.x);
                 p.y = swabi4 ((unsigned int)p.y);
             }
-                
+
             if (h.south == -90000000 && k == (h.n - 4) ) {
                 polygons->contour[h.id].vertex[k].x = 0;
                 polygons->contour[h.id].vertex[k].y = -90000000;
@@ -167,19 +168,19 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
 
                 if (debug==1)
                 {
-                    printf ("lon(%2d)=%10d ,%10.6f , lat(%2d)=%10d ,%10.6f\n",  sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
                 }
                 polygons->contour[h.id].vertex[k].x = 0;
                 polygons->contour[h.id].vertex[k].y = -90000000;
                 lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
                 lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
                 k++;
-                
+
                 if (debug==1)
                 {
-                    printf ("lon(%2d)=%10d ,%10.6f , lat(%2d)=%10d ,%10.6f\n",  sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
                 }
                 polygons->contour[h.id].vertex[k].x = 360000000;
                 polygons->contour[h.id].vertex[k].y = -90000000;
@@ -188,11 +189,11 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
                 k++;
                 if (debug==1)
                 {
-                    printf ("lon(%2d)=%10d ,%10.6f , lat(%2d)=%10d ,%10.6f\n",  sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
                 }
             }
-                
+
             if (polygons->contour[h.id].greenwich && p.x > max_east) p.x -= 360000000;
             lon = p.x * GSHHS_SCL;
             lat = p.y * GSHHS_SCL;
@@ -209,8 +210,8 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
 
             if (debug==1)
             {
-                printf ("lon(%2d)=%10d ,%10.6f , lat(%2d)=%10d ,%10.6f\n",  sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                            sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                             (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
             }
         }
         //}
@@ -219,18 +220,18 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
     }
     polygons->nb_poly = h.id;
 
-}    
+}
 
 void free_gshhs(gshhs_polygons *polygons, int nb_poly)
-{ 
+{
     int k;
-    /* vidage de la memoire des donnÃ©es GSHHS */
+    /* vidage de la memoire des données GSHHS */
     for (k = 0; k <= nb_poly; k++)
     {
         free(polygons->contour[k].vertex);
         polygons->contour[k].vertex = NULL;
     }
-    
+
     free(polygons->contour);
     polygons->contour = NULL;
 

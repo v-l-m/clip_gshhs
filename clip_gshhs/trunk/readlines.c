@@ -1,32 +1,33 @@
 /**
- *    Filename          : readlines.c
+ *  Filename          : readlines.c
+ *  Created by        : StephPen - stephpen@gmail.com
+ *  Update            : 11:14 02/01/2011
 
- *    Created           : 11:40 05/12/2010
- *    Created by        : StephPen - stephpen @at@ gmail . com
-
- *    Last Updated      : 11:40 05/12/2010
- *    Updated by        : StephPen - stephpen @at@ gmail . com
-
- *    (c) 2008 by Stephane PENOT
- *        See COPYING file for copying and redistribution conditions.
+ *  (c) 2008 by Stephane PENOT
+ *      See COPYING file for copying and redistribution conditions.
  *
- *        This program is free software; you can redistribute it and/or modify
- *        it under the terms of the GNU General Public License as published by
- *        the Free Software Foundation; version 2 of the License.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- *        This program is distributed in the hope that it will be useful,
- *        but WITHOUT ANY WARRANTY; without even the implied warranty of
- *        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *        GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
  *
- *    Comments          :
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Comments          :
  *
  *
  *
  *
  *
- *    Contact: <stephpen @at@ gmail . com>
+ *  Contact: <stephpen@gmail.com>
 */
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -98,8 +99,8 @@ int main (int argc, char **argv)
     }
 
 
-    // Allocation de la memoire pour stocker toutes les donnÃ©es du GSHHS
-    printf("Allocation de la memoire pour stocker toutes les donnÃ©es du GSHHS\n");
+    // Allocation de la memoire pour stocker toutes les données du GSHHS
+    printf("Allocation de la memoire pour stocker toutes les données du GSHHS\n");
     polygons = NULL;
     polygons = malloc(1 * sizeof(gshhs_polygons));
     if ( polygons == NULL )
@@ -108,8 +109,8 @@ int main (int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    // Allocation de la memoire pour stocker toutes les donnÃ©es par tranche de 1deg x 1deg
-    printf("Allocation de la memoire pour stocker toutes les donnÃ©es par tranche de 1deg x 1deg\n");
+    // Allocation de la memoire pour stocker toutes les données par tranche de 1deg x 1deg
+    printf("Allocation de la memoire pour stocker toutes les données par tranche de 1deg x 1deg\n");
     for (u=0; u<360; u++)
     {
         for (v=0; v<180; v++)
@@ -126,8 +127,8 @@ int main (int argc, char **argv)
     }
 
 
-    /* Lecture et mise en memoire des donnÃ©es */
-    printf("Lecture GSHHS et mise en memoire des donnÃ©es\n");
+    /* Lecture et mise en memoire des données */
+    printf("Lecture GSHHS et mise en memoire des données\n");
     read_gshhs(gshhs_file, polygons, 0);
 
     /* Affichage du nombre de polygones contenu dans le GSHHS */
@@ -355,7 +356,7 @@ int main (int argc, char **argv)
         }
     }
 
-    // Ecriture des donnÃ©es
+    // Ecriture des données
     for (i=0; i<360; i=i+1)
     {
 
@@ -397,16 +398,16 @@ int main (int argc, char **argv)
 
     fclose(out_file);
 
-    /* libÃ©ration de la memoire des donnÃ©es GSHHS */
-    printf("Liberation de la memoire des donnÃ©es GSHHS\n");
+    /* libération de la memoire des données GSHHS */
+    printf("Liberation de la memoire des données GSHHS\n");
     free_gshhs(polygons, polygons->nb_poly);
 
     free(polygons);
     polygons = NULL;
 
 
-    /* libÃ©ration de la mÃ©moire des tranches */
-    printf("LibÃ©ration de la mÃ©moire des tranches\n");
+    /* libération de la mémoire des tranches */
+    printf("Libération de la mémoire des tranches\n");
     for (u=0; u<360; u++)
     {
         for (v=0; v<180; v++)

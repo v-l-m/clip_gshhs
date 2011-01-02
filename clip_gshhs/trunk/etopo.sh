@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  Filename          : clean.sh
+#  Filename          : etopo.sh
 #  Created by        : StephPen - stephpen@gmail.com
 #  Update            : 11:14 02/01/2011
 #
@@ -31,14 +31,20 @@
 #
 
 
-RESOL=$1
+ETOPO=$1
+ETOPO_DAT=$2
 
-#PATHBD=/home/spenot/gshhs
-PATHBD=./
+# Download ETOPO files
+# wget http://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/ice_surface/grid_registered/xyz/ETOPO1_Ice_g_int.xyz.gz
+# wget http://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/bedrock/grid_registered/xyz/ETOPO1_Bed_g_int.xyz.gz
 
-echo Nettoyage
-    cd bd
-    nice -10 rm -r -v bd_$RESOL
-    rm $RESOL*.dat
-    cd ..
+echo Decompression
+gunzip $ETOPO.gz
 
+echo Passe 1
+./compile_etopo $ETOPO $ETOPO.dat
+
+echo Passe finale
+./compile_etopo_060 $ETOPO.dat $ETOPO_DAT
+
+rm $ETOPO.dat
