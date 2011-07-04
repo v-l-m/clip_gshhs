@@ -113,7 +113,7 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
         polygons->contour[h.id].nb_point    = h.n;
         polygons->contour[h.id].level       = h.flag & 255;
         polygons->contour[h.id].version     = (h.flag >> 8) & 255;
-        polygons->contour[h.id].greenwich   = (h.flag >> 16) & 255;
+        polygons->contour[h.id].greenwich   = (h.flag >> 16) & 0x3;
         polygons->contour[h.id].source      = (h.flag >> 24) & 255; /* Either =1 = WVS or <>1 = CIA (WDBII) pedigree */
         polygons->contour[h.id].long_min    = h.west;
         polygons->contour[h.id].long_max    = h.east;
@@ -194,7 +194,7 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
                 }
             }
 
-            if (polygons->contour[h.id].greenwich && p.x > max_east) p.x -= 360000000;
+            if ((polygons->contour[h.id].greenwich & 0x1) && p.x > max_east) p.x -= 360000000;
             lon = p.x * GSHHS_SCL;
             lat = p.y * GSHHS_SCL;
             polygons->contour[h.id].vertex[k].x = p.x;
