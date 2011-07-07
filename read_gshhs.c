@@ -159,62 +159,51 @@ void read_gshhs(FILE *gshhs_file, gshhs_polygons *polygons, int debug)
                 p.y = swabi4 ((unsigned int)p.y);
             }
 
-            if (h.south == -90000000 && k == (h.n - 4) ) {
-                polygons->contour[h.id].vertex[k].x = 0;
-                polygons->contour[h.id].vertex[k].y = -90000000;
-                lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
-                lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
-                k++;
-
-                if (debug==1)
-                {
-                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
-                }
-                polygons->contour[h.id].vertex[k].x = 0;
-                polygons->contour[h.id].vertex[k].y = -90000000;
-                lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
-                lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
-                k++;
-
-                if (debug==1)
-                {
-                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
-                }
-                polygons->contour[h.id].vertex[k].x = 360000000;
-                polygons->contour[h.id].vertex[k].y = -90000000;
-                lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
-                lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
-                k++;
-                if (debug==1)
-                {
-                    printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                                 (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
-                }
-            }
-
             if ((polygons->contour[h.id].greenwich & 0x1) && p.x > max_east) p.x -= 360000000;
             lon = p.x * GSHHS_SCL;
             lat = p.y * GSHHS_SCL;
             polygons->contour[h.id].vertex[k].x = p.x;
             polygons->contour[h.id].vertex[k].y = p.y;
 
-            if (h.south == -90000000 && k == (h.n - 1) ) {
-                polygons->contour[h.id].vertex[k-3].x = p.x;
-                polygons->contour[h.id].vertex[k-3].y = p.y;
-                lon = polygons->contour[h.id].vertex[k-3].x * GSHHS_SCL;
-                lat = polygons->contour[h.id].vertex[k-3].y * GSHHS_SCL;
-                k++;
-            }
 
-            if (debug==1)
-            {
-                printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n", (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
-                                                                             (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+            if (h.south == -90000000) {
+                if ( k == (h.n - 4)) {
+                    polygons->contour[h.id].vertex[k].x = p.x;
+                    polygons->contour[h.id].vertex[k].y = p.y;
+                    lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
+                    lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
+                    k++;
+
+                    if (debug==1)
+                    {
+                        printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n",    (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                        (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    }
+                    polygons->contour[h.id].vertex[k].x = -180000000;
+                    polygons->contour[h.id].vertex[k].y = -90000000;
+                    lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
+                    lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
+                    k++;
+
+                    if (debug==1)
+                    {
+                        printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n",    (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                        (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    }
+                    polygons->contour[h.id].vertex[k].x = -180000000;
+                    polygons->contour[h.id].vertex[k].y = -90000000;
+                    lon = polygons->contour[h.id].vertex[k].x * GSHHS_SCL;
+                    lat = polygons->contour[h.id].vertex[k].y * GSHHS_SCL;
+                    k++;
+                    if (debug==1)
+                    {
+                        printf ("lon(%2lu)=%10d ,%10.6f , lat(%2lu)=%10d ,%10.6f\n",    (long unsigned int)sizeof(p.x), polygons->contour[h.id].vertex[k].x, lon,
+                                                                                        (long unsigned int)sizeof(p.y), polygons->contour[h.id].vertex[k].y, lat);
+                    }
+                }
             }
         }
-        //}
+        
         max_east = 180000000;    /* Only Eurasiafrica needs 270 */
         n_read = fread((void *)&h, (size_t)sizeof (struct GSHHS), (size_t)1, gshhs_file);
     }
